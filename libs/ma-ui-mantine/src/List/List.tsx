@@ -1,6 +1,6 @@
 import { ListControllerProps, ListBase, MaRecord } from '@maesa-admin/core';
 import { ReactElement } from 'react';
-import { Query, QueryClient, QueryClientProvider, useQueryClient } from 'react-query';
+import { QueryClient, QueryClientProvider, useQueryClient } from 'react-query';
 import { ListView, ListViewProps } from './ListView';
 
 export interface ListProps<RecordType extends MaRecord = any>
@@ -25,7 +25,7 @@ export const List = <RecordType extends MaRecord = any>(
     ...rest
   } = props;
 
-  const queryClient = extendedQueryClient || useQueryClient() || new QueryClient()
+  const queryClient = extendedQueryClient || new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>

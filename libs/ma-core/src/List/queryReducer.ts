@@ -3,6 +3,7 @@ import { ListParams } from './useListParams';
 import _set from 'lodash/set';
 import removeEmpty from '../utils/removeEmpty';
 import removeKey from '../utils/removeKey';
+import { SortPayload } from '../types';
 
 export const SET_SORT = 'SET_SORT';
 export const SORT_ASC = 'ASC';
@@ -17,13 +18,15 @@ export const HIDE_FILTER = 'HIDE_FILTER';
 const oppositeOrder = (direction: string) =>
   direction === SORT_DESC ? SORT_ASC : SORT_DESC;
 
-type ActionTypes =
+export type QueryReducerActionTypes =
   | {
       type: typeof SET_SORT;
-      payload: {
-        field: string;
-        order?: typeof SORT_ASC | typeof SORT_DESC;
-      };
+      payload:
+        | SortPayload
+        | {
+            field: string;
+            order?: typeof SORT_ASC | typeof SORT_DESC;
+          };
     }
   | {
       type: typeof SET_PAGE;
@@ -54,7 +57,7 @@ type ActionTypes =
       payload: string;
     };
 
-export const queryReducer: Reducer<ListParams, ActionTypes> = (
+export const queryReducer: Reducer<ListParams, QueryReducerActionTypes> = (
   previousState,
   action
 ) => {

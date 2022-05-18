@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TARGET = { [key: string]: any | TARGET }
 
 const removeKey = (target: TARGET, path: string) =>
@@ -9,7 +10,7 @@ const removeKey = (target: TARGET, path: string) =>
         return acc;
     }, {});
 
-const deepRemoveKey = (target: TARGET, path: string): any => {
+const deepRemoveKey = (target: TARGET, path: string): TARGET => {
     const paths = path.split('.');
 
     if (paths.length === 1) {

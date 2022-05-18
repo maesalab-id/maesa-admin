@@ -1,14 +1,17 @@
-import { ReactNode } from "react";
-import { ListContext } from "./ListContext";
-import { ListFilterContext, usePickFilterContext } from "./ListFilterContext";
-import { ListPaginationContext, usePickPaginationContext } from "./ListPaginationContext";
+import { ReactNode } from 'react';
+import { ListContext } from './ListContext';
+import { ListFilterContext, usePickFilterContext } from './ListFilterContext';
+import {
+  ListPaginationContext,
+  usePickPaginationContext,
+} from './ListPaginationContext';
 
 export const ListContextProvider = ({
   value,
-  children
+  children,
 }: {
-  value: any,
-  children: ReactNode
+  value: any;
+  children: ReactNode;
 }) => (
   <ListContext.Provider value={value}>
     <ListFilterContext.Provider value={usePickFilterContext(value)}>
@@ -17,4 +20,4 @@ export const ListContextProvider = ({
       </ListPaginationContext.Provider>
     </ListFilterContext.Provider>
   </ListContext.Provider>
-)
+);

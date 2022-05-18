@@ -1,8 +1,18 @@
-import { useCallback, useMemo, useRef, useState } from "react";
-import { FilterPayload, SortPayload } from "../types";
-import { HIDE_FILTER, queryReducer, SET_FILTER, SET_LIMIT, SET_PAGE, SET_SORT, SHOW_FILTER, SORT_ASC } from "./queryReducer";
-import removeEmpty from "../utils/removeEmpty";
-import _debounce from "lodash/debounce";
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { FilterPayload, SortPayload } from '../types';
+import {
+  HIDE_FILTER,
+  queryReducer,
+  QueryReducerActionTypes,
+  SET_FILTER,
+  SET_LIMIT,
+  SET_PAGE,
+  SET_SORT,
+  SHOW_FILTER,
+  SORT_ASC,
+} from './queryReducer';
+import removeEmpty from '../utils/removeEmpty';
+import _debounce from 'lodash/debounce';
 
 export const hasCustomParams = (params: ListParams) => {
   return (
@@ -22,15 +32,14 @@ const getQuery = ({
   sort,
   limit,
 }: {
-  filterDefaultValues: any,
-  params: any,
-  sort: any,
-  limit: number,
+  filterDefaultValues?: FilterPayload;
+  params: ListParams;
+  sort: SortPayload;
+  limit: number;
 }) => {
-  const query: Partial<ListParams> =
-    hasCustomParams(params)
-      ? { ...params }
-      : { filter: filterDefaultValues || {} }
+  const query: Partial<ListParams> = hasCustomParams(params)
+    ? { ...params }
+    : { filter: filterDefaultValues || {} };
 
   if (!query.sort) {
     query.sort = sort.field;
@@ -47,7 +56,7 @@ const getQuery = ({
     page: getNumberOrDefault(query.page, 1),
     limit: getNumberOrDefault(query.limit, 10),
   } as ListParams;
-}
+};
 
 export const getNumberOrDefault = (
   possibleNumber: string | number | undefined,
@@ -69,7 +78,7 @@ export const useListParams = ({
   debounce = 500,
 }: ListParamsOptions): [Parameters, Modifiers] => {
   const tempParams = useRef<ListParams>();
-  const [localParams, setLocalParams] = useState(defaultParams);
+  const [localParams, setLocalParams] = useState<ListParams>(defaultParams);
   const storyKey = `${resource}.listParams`;
   const requestSignature: any[] = [
     storyKey,
@@ -77,19 +86,23 @@ export const useListParams = ({
     JSON.stringify(filterDefaultValues),
     JSON.stringify(sort),
     limit,
-  ]
+  ];
 
-  const query = useMemo(() => getQuery({
-    filterDefaultValues,
-    params: localParams,
-    sort,
-    limit
-  }), requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+  const query = useMemo(
+    () =>
+      getQuery({
+        filterDefaultValues,
+        params: localParams,
+        sort,
+        limit,
+      }),
+    requestSignature
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filterValues = query.filter || emptyObject;
   const displayedFilterValues = query.displayedFilters || emptyObject;
 
-  const changeParams = useCallback((action: any) => {
+  const changeParams = useCallback((action: QueryReducerActionTypes) => {
     if (!tempParams.current) {
       tempParams.current = queryReducer(query, action);
       setTimeout(() => {
@@ -108,8 +121,8 @@ export const useListParams = ({
 
   const setPage = useCallback(
     (newPage: number) => {
-      console.log("SET PAGE", newPage);
-      changeParams({ type: SET_PAGE, payload: newPage })
+      console.log('SET PAGE', newPage);
+      changeParams({ type: SET_PAGE, payload: newPage });
     },
     requestSignature // eslint-disable-line react-hooks/exhaustive-deps
   );
@@ -124,39 +137,42 @@ export const useListParams = ({
       type: SET_FILTER,
       payload: {
         filter: removeEmpty(filter),
-        displayedFilters
-      }
-    })
+        displayedFilters,
+      },
+    });
   }, debounce);
 
-  const setFilters = useCallback((filter: any, displayedFilters: any, debounce = true) => {
-    if (debounce) return debounceSetFilter(filter, displayedFilters);
+  const setFilters = useCallback(
+    (filter: any, displayedFilters: any, debounce = true) => {
+      if (debounce) return debounceSetFilter(filter, displayedFilters);
 
-    return changeParams({
-      type: SET_FILTER,
-      payload: {
-        filter: removeEmpty(filter),
-        displayedFilters
-      }
-    })
-  }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+      return changeParams({
+        type: SET_FILTER,
+        payload: {
+          filter: removeEmpty(filter),
+          displayedFilters,
+        },
+      });
+    },
+    requestSignature
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
   const showFilter = useCallback((filterName: string, defaultValue: any) => {
-    console.log("show_filter", filterName, defaultValue)
+    console.log('show_filter', filterName, defaultValue);
     changeParams({
       type: SHOW_FILTER,
       payload: {
         filterName,
         defaultValue,
       },
-    })
+    });
   }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
   const hideFilter = useCallback((filterName: string) => {
     changeParams({
       type: HIDE_FILTER,
       payload: filterName,
-    })
+    });
   }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
   return [
@@ -174,15 +190,22 @@ export const useListParams = ({
       showFilter,
       hideFilter,
       changeParams,
-    }
-  ]
-}
+    },
+  ];
+};
 
 const defaultSort = {
-  field: "id",
-  order: SORT_ASC
-}
-const defaultParams = {};
+  field: 'id',
+  order: SORT_ASC,
+};
+const defaultParams: ListParams = {
+  order: '',
+  page: 0,
+  limit: 0,
+  sort: '',
+  filter: undefined,
+  displayedFilters: undefined
+};
 
 const emptyObject = {};
 
