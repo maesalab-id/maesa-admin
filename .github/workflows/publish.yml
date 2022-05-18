@@ -8,14 +8,24 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: 16
-      - run: npm install
-      - run: npx nx test
-      - run: npx nx build
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install environtment
+        run: npm ci
+
+      - run: npx nx test ma-core --ci --code-coverage
+      - run: npm nx test ma-ui-mantine --ci --code-coverage
+      - run: npx nx build ma-core
+      - run: npx nx build ma-ui-mantine
 
       - name: Publishing @maesa-admin/core
         working-directory: ./dist/libs/ma-core
