@@ -22,12 +22,10 @@ jobs:
       - name: Install environtment
         run: npm ci
 
-      - name: Test and Build
+      - name: Test
         run: |
           npx nx test ma-core --ci --code-coverage
           npx nx test ma-ui-mantine --ci --code-coverage
-          npx nx build ma-core
-          npx nx build ma-ui-mantine
 
       - name: Setup GIT
         run: |
@@ -39,13 +37,39 @@ jobs:
           GH_EMAIL: ${{secrets.GH_EMAIL}}
 
       - run: git reset --hard
-      
+
       - name: Bump version @maesa-admin/core
         working-directory: ./dist/libs/ma-core
         run: npm version patch
       - name: Bump version @maesa-admin/ui-mantine
         working-directory: ./dist/libs/ma-ui-mantine
         run: npm version patch
+
+      - name: Build
+        run: |
+          npx nx build ma-core
+          npx nx build ma-ui-mantine
+
+      - name: Push bumped version
+        run: |
+          git add . || true
+          git commit -m "Build update" || true
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Setup npm config
+        run: npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+
+      - name: Publishing @maesa-admin/core
+        working-directory: ./dist/libs/ma-core
+        run: npm publish || true
+
+      - name: Publishing @maesa-admin/ui-mantine
+        working-directory: ./dist/libs/ma-ui-mantine
+        run: npm publish || true
 
       # - name: npm publish
       #   run: |
