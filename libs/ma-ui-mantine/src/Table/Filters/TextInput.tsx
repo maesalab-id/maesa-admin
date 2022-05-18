@@ -9,7 +9,7 @@ interface TextInputProps extends CommonInputProps {
 }
 
 export const TextInput: FC<TextInputProps> = (props) => {
-  const { label, source = 'q' } = props;
+  const { placeholder, source = 'q' } = props;
 
   const [localValue, setLocalValue] = useState<string>('');
   const { isLoading, setFilters } = useListContext();
@@ -22,7 +22,7 @@ export const TextInput: FC<TextInputProps> = (props) => {
 
   return (
     <MtTextInput
-      placeholder={label || source}
+      placeholder={placeholder || source}
       value={localValue}
       onChange={(e) => {
         let value = e.target.value;

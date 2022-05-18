@@ -1,4 +1,4 @@
-export * from './types.d'
+export * from './types'
 
 export * from './FilterButton'
 export * from './FilterButtonMenuItem'
