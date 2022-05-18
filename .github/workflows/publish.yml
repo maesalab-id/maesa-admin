@@ -38,10 +38,12 @@ jobs:
         env:
           GH_EMAIL: ${{secrets.GH_EMAIL}}
 
-      - name: Bump version
-        run: git reset --hard
+      - run: git reset --hard
+      
+      - name: Bump version @maesa-admin/core
         working-directory: ./dist/libs/ma-core
         run: npm version patch
+      - name: Bump version @maesa-admin/ui-mantine
         working-directory: ./dist/libs/ma-ui-mantine
         run: npm version patch
 
