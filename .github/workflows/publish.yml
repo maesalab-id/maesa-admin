@@ -1,0 +1,55 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - uses: nrwl/nx-set-shas@v2
+      - run: npm ci
+      - run: npm install
+      - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
+      - run: npx nx affected --target=build --parallel=3
+
+      - name: Publishing @maesa-admin/core
+        working-directory: ./dist/libs/ma-core
+        run: ls
+
+      - name: Publishing @maesa-admin/ui-mantine
+        working-directory: ./dist/libs/ma-ui-mantine
+        run: ls
+
+      # - name: Setup GIT
+      #   run: |
+      #     git config --local --list
+      #     git checkout master
+      #     git config user.email "$GH_EMAIL"
+      #     git config user.name "Imanuel Pundoko"
+      #   env:
+      #     GH_EMAIL: ${{secrets.GH_EMAIL}}
+
+      # - name: Bump version
+      #   run: |
+      #     git reset --hard
+      #     npm version patch
+      #     npm run build
+      #     git add . || true
+      #     git commit -m "Build update" || true
+      #     git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      # - name: npm publish
+      #   run: |
+      #     npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+      #     npm run trypublish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
