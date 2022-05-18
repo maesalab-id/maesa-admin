@@ -25,7 +25,7 @@ export const List = <RecordType extends MaRecord = any>(
     ...rest
   } = props;
 
-  const queryClient = extendedQueryClient || new QueryClient()
+  const queryClient = extendedQueryClient || new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>

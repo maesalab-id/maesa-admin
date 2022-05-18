@@ -204,7 +204,7 @@ const defaultParams: ListParams = {
   limit: 0,
   sort: '',
   filter: undefined,
-  displayedFilters: undefined
+  displayedFilters: undefined,
 };
 
 const emptyObject = {};
