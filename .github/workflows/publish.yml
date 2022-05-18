@@ -22,38 +22,28 @@ jobs:
       - name: Install environtment
         run: npm ci
 
-      - run: npx nx test ma-core --ci --code-coverage
-      - run: npm nx test ma-ui-mantine --ci --code-coverage
-      - run: npx nx build ma-core
-      - run: npx nx build ma-ui-mantine
+      - name: Test and Build
+        run: |
+          npx nx test ma-core --ci --code-coverage
+          npx nx test ma-ui-mantine --ci --code-coverage
+          npx nx build ma-core
+          npx nx build ma-ui-mantine
 
-      - name: Publishing @maesa-admin/core
+      - name: Setup GIT
+        run: |
+          git config --local --list
+          git checkout main
+          git config user.email "$GH_EMAIL"
+          git config user.name "Imanuel Pundoko"
+        env:
+          GH_EMAIL: ${{secrets.GH_EMAIL}}
+
+      - name: Bump version
+        run: git reset --hard
         working-directory: ./dist/libs/ma-core
-        run: ls
-
-      - name: Publishing @maesa-admin/ui-mantine
+        run: npm version patch
         working-directory: ./dist/libs/ma-ui-mantine
-        run: ls
-
-      # - name: Setup GIT
-      #   run: |
-      #     git config --local --list
-      #     git checkout master
-      #     git config user.email "$GH_EMAIL"
-      #     git config user.name "Imanuel Pundoko"
-      #   env:
-      #     GH_EMAIL: ${{secrets.GH_EMAIL}}
-
-      # - name: Bump version
-      #   run: |
-      #     git reset --hard
-      #     npm version patch
-      #     npm run build
-      #     git add . || true
-      #     git commit -m "Build update" || true
-      #     git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: npm version patch
 
       # - name: npm publish
       #   run: |
