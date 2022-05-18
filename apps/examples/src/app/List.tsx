@@ -33,7 +33,7 @@ export const List = () => {
     >
       <Table>
         <TextField label="Id" source="id" />
-        <TextField label="Name" source="name" />
+        <TextField label={'Name'} source="name" />
       </Table>
     </ListBase>
   );

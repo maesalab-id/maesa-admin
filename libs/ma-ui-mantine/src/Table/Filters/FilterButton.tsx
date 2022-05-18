@@ -5,9 +5,7 @@ import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { ActionIcon, Menu } from '@mantine/core';
 import { IconFilter } from '@tabler/icons';
 
-export const FilterButton: FC<FilterButtonProps> = (
-  props
-): ReactElement | null => {
+export const FilterButton = (props: FilterButtonProps): ReactElement | null => {
   const { filters } = props;
 
   const {
