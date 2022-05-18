@@ -23,9 +23,7 @@ jobs:
         run: npm ci
 
       - name: Test
-        run: |
-          npx nx test ma-core --ci --code-coverage
-          npx nx test ma-ui-mantine --ci --code-coverage
+        run: npx nx run-many --target=test --parallel=3 --all --exclude=examples
 
       - name: Setup GIT
         run: |
@@ -46,9 +44,7 @@ jobs:
         run: npm version patch
 
       - name: Build
-        run: |
-          npx nx build ma-core
-          npx nx build ma-ui-mantine
+        run: npx nx run-many --target=build --parallel=3 --all --exclude=examples
 
       - name: Push bumped version
         run: |
