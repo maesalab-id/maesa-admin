@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "examples": "apps/examples",
+    "examples-e2e": "apps/examples-e2e",
+    "ma-core": "libs/ma-core",
+    "ma-ui-mantine": "libs/ma-ui-mantine"
+  }
+}
