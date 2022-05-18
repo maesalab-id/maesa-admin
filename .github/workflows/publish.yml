@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Test
-        run: npx nx run-many --target=test --parallel=3 --all --exclude=examples
+        run: npx nx run-many --target=test --parallel=3 --ci --code-coverage --all --exclude=examples
 
       - name: Setup GIT
         run: |
