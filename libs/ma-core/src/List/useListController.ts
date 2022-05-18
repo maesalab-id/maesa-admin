@@ -1,9 +1,9 @@
-import { useMemo } from "react";
-import { useQuery } from "react-query";
-import { FilterPayload, MaRecord, SortPayload } from "../types";
-import { SORT_ASC } from "./queryReducer";
-import { useListParams } from "./useListParams";
-import { useRecordSelection } from "./useRecordSelection";
+import { useMemo } from 'react';
+import { useQuery } from 'react-query';
+import { FilterPayload, MaRecord, SortPayload } from '../types';
+import { SORT_ASC } from './queryReducer';
+import { useListParams } from './useListParams';
+import { useRecordSelection } from './useRecordSelection';
 
 export const useListController = <RecordType extends MaRecord = any>(
   props: ListControllerProps<RecordType> = {}
@@ -26,20 +26,28 @@ export const useListController = <RecordType extends MaRecord = any>(
     sort,
     limit,
     debounce,
-  })
+  });
 
   const [selectedIds, selectionModifier] = useRecordSelection();
 
-  const pagination = useMemo(() => ({
-    skip: Math.floor((query.page !== 0 ? query.page - 1 : query.page) * query.limit),
-    limit: query.limit,
-    page: query.page,
-  }), [query.limit, query.page]);
+  const pagination = useMemo(
+    () => ({
+      skip: Math.floor(
+        (query.page !== 0 ? query.page - 1 : query.page) * query.limit
+      ),
+      limit: query.limit,
+      page: query.page,
+    }),
+    [query.limit, query.page]
+  );
 
-  const currentSort = useMemo(() => ({
-    field: query.sort,
-    order: query.order
-  }), [query.sort, query.order]);
+  const currentSort = useMemo(
+    () => ({
+      field: query.sort,
+      order: query.order,
+    }),
+    [query.sort, query.order]
+  );
 
   const queryFilter = useMemo(() => {
     return { ...query.filter, ...filter };
@@ -48,29 +56,35 @@ export const useListController = <RecordType extends MaRecord = any>(
   const {
     data: originalData,
     isLoading,
-    isFetching
+    isFetching,
   } = useQuery(
-    [resource, "getList", {
-      pagination,
-      currentSort,
-      filter: queryFilter
-    }],
-    () => queryFn?.({
-      filter: queryFilter,
-      pagination,
-      sort: {
-        field: query.sort,
-        order: query.order
-      }
-    }),
+    [
+      resource,
+      'getList',
+      {
+        pagination,
+        currentSort,
+        filter: queryFilter,
+      },
+    ],
+    () =>
+      queryFn?.({
+        filter: queryFilter,
+        pagination,
+        sort: {
+          field: query.sort,
+          order: query.order,
+        },
+      }),
     queryOptions
-  )
+  );
 
   const { data, total } = useMemo(() => {
-    if (!originalData) return {
-      total: 0,
-      data: []
-    }
+    if (!originalData)
+      return {
+        total: 0,
+        data: [],
+      };
     return {
       total: originalData.total,
       data: originalData.data,
@@ -100,9 +114,9 @@ export const useListController = <RecordType extends MaRecord = any>(
     sort: currentSort,
     setSort: queryModifier.setSort,
 
-    total
+    total,
   };
-}
+};
 
 export interface ListControllerResult<RecordType extends MaRecord = any> {
   data: RecordType[];
@@ -111,10 +125,7 @@ export interface ListControllerResult<RecordType extends MaRecord = any> {
   displayedFilters: {
     [key: string]: boolean;
   };
-  setFilters: (
-    filters: any,
-    debounce?: boolean
-  ) => void;
+  setFilters: (filters: any, debounce?: boolean) => void;
   showFilter: (filterName: string, defaultValue: any) => void;
   hideFilter: (filterName: string) => void;
 
@@ -141,6 +152,16 @@ interface GetListResult<RecordType> {
   limit: number;
 }
 
+export type QueryFunctionArgs = {
+  filter?: FilterPayload;
+  pagination?: {
+    limit: number;
+    skip: number;
+    page: number;
+  };
+  sort?: SortPayload;
+};
+
 export interface ListControllerProps<RecordType extends MaRecord = any> {
   debounce?: number;
   filter?: FilterPayload;
@@ -148,15 +169,9 @@ export interface ListControllerProps<RecordType extends MaRecord = any> {
 
   limit?: number;
   queryOptions?: any;
-  queryFn?: (args: {
-    filter?: FilterPayload;
-    pagination?: {
-      limit: number;
-      skip: number;
-      page: number;
-    };
-    sort?: SortPayload;
-  }) => (GetListResult<RecordType[]> | null) | Promise<GetListResult<RecordType[]> | null>;
+  queryFn?: (args: QueryFunctionArgs) =>
+    | (GetListResult<RecordType[]> | null)
+    | Promise<GetListResult<RecordType[]> | null>;
 
   sort?: SortPayload;
 
