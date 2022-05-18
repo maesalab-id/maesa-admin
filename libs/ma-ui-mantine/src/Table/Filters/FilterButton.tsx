@@ -1,5 +1,5 @@
 import { useListContext } from '@maesa-admin/core';
-import { FC, ReactElement, useCallback, useMemo } from 'react';
+import { ReactElement, useCallback, useMemo } from 'react';
 import _get from 'lodash/get';
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { ActionIcon, Menu } from '@mantine/core';

@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
+import { ReactNode } from "react";
 
 export type CommonInputProps = {
   alwaysOn?: boolean;
-  label?: string | ReactElement | null;
+  label?: string | ReactNode | null;
   placeholder?: string;
 }
