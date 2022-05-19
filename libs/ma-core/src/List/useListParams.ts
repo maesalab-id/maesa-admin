@@ -13,6 +13,7 @@ import {
 } from './queryReducer';
 import removeEmpty from '../utils/removeEmpty';
 import _debounce from 'lodash/debounce';
+import { useDebouncedCallback } from '../utils/useDebounceCallback';
 
 export const hasCustomParams = (params: ListParams) => {
   return (
@@ -132,7 +133,7 @@ export const useListParams = ({
     requestSignature // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  const debounceSetFilter = _debounce((filter, displayedFilters) => {
+  const debounceSetFilter = useDebouncedCallback((filter, displayedFilters) => {
     changeParams({
       type: SET_FILTER,
       payload: {
@@ -158,7 +159,6 @@ export const useListParams = ({
   ); // eslint-disable-line react-hooks/exhaustive-deps
 
   const showFilter = useCallback((filterName: string, defaultValue: any) => {
-    console.log('show_filter', filterName, defaultValue);
     changeParams({
       type: SHOW_FILTER,
       payload: {

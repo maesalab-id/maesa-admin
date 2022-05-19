@@ -1,26 +1,25 @@
-import { Card } from "@mantine/core";
-import { ElementType, ReactElement } from "react";
-import { MaRecord, useListContext  } from "@maesa-admin/core";
-import { ListToolbar } from "./ListToolbar";
-import { Pagination as DefaultPagination } from "../Pagination";
+import { Card } from '@mantine/core';
+import { ElementType, ReactElement } from 'react';
+import { MaRecord, useListContext } from '@maesa-admin/core';
+import { ListToolbar } from './ListToolbar';
+import { Pagination as DefaultPagination } from '../Pagination';
 
-const DefaultComponent = (props: any) => <Card shadow="md" mb="sm" px={0} {...props} />;
+const DefaultComponent = (props: any) => (
+  <Card shadow="md" mb="sm" px={0} {...props} />
+);
 
 export const ListView = <RecordType extends MaRecord = any>(
   props: ListViewProps
 ) => {
-
   const {
     children,
     component: Content = DefaultComponent,
     pagination = <DefaultPagination />,
-    filters
+    filters,
+    actions,
   } = props;
 
-  const {
-    data,
-    isLoading,
-  } = useListContext<RecordType>(props);
+  const { data, isLoading } = useListContext<RecordType>(props);
 
   if (!children || (!data && isLoading)) {
     return null;
@@ -28,17 +27,15 @@ export const ListView = <RecordType extends MaRecord = any>(
 
   return (
     <div>
-      <ListToolbar filters={filters} />
-      <Content>
-        {children}
-      </Content>
+      <ListToolbar filters={filters} actions={actions} />
+      <Content>{children}</Content>
       {pagination}
     </div>
-  )
-}
+  );
+};
 
 export interface ListViewProps {
-  actions?: ReactElement | false;
+  actions?: ReactElement | null;
   children: ReactElement | ReactElement[];
   component?: ElementType;
   pagination?: ReactElement | null;

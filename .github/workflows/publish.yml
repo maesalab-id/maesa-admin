@@ -46,13 +46,10 @@ jobs:
       - name: Build
         run: npx nx run-many --target=build --parallel=3 --all --exclude=examples
 
-      - name: Push bumped version
+      - name: Commit bumped version
         run: |
           git add . || true
-          git commit -m "Build update" || true
-          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          git commit -m "Build and Publish update" || true
 
       - name: Setup npm config
         run: npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
@@ -67,9 +64,7 @@ jobs:
         working-directory: ./dist/libs/ma-ui-mantine
         run: npm publish || true
 
-      # - name: npm publish
-      #   run: |
-      #     npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-      #     npm run trypublish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+      - name: Push published version
+        run: git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

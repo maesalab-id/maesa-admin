@@ -76,7 +76,10 @@ export const useListController = <RecordType extends MaRecord = any>(
           order: query.order,
         },
       }),
-    queryOptions
+    {
+      ...queryOptions,
+      refetchOnWindowFocus: false
+    }
   );
 
   const { data, total } = useMemo(() => {
@@ -125,7 +128,7 @@ export interface ListControllerResult<RecordType extends MaRecord = any> {
   displayedFilters: {
     [key: string]: boolean;
   };
-  setFilters: (filters: any, debounce?: boolean) => void;
+  setFilters: (filters: any, displayedFilters: any, debounce?: boolean) => void;
   showFilter: (filterName: string, defaultValue: any) => void;
   hideFilter: (filterName: string) => void;
 
@@ -169,7 +172,9 @@ export interface ListControllerProps<RecordType extends MaRecord = any> {
 
   limit?: number;
   queryOptions?: any;
-  queryFn?: (args: QueryFunctionArgs) =>
+  queryFn?: (
+    args: QueryFunctionArgs
+  ) =>
     | (GetListResult<RecordType[]> | null)
     | Promise<GetListResult<RecordType[]> | null>;
 
