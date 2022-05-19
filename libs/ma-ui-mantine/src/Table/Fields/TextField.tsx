@@ -4,17 +4,17 @@ import get from 'lodash/get';
 import { PublicFieldProps } from './types';
 
 export const TextField = (props: TextFieldProps): JSX.Element => {
-  const { label, source, showLabel = false } = props;
+  const { label, source, showLabel = true } = props;
   const record = useRecordContext();
   const value = get(record, source);
   return (
     <div>
-      <Text>{value}</Text>
       {showLabel && (
         <Text size="sm" color="gray">
           {label}
         </Text>
       )}
+      <Text>{value}</Text>
     </div>
   );
 };

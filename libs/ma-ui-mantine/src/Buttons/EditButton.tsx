@@ -1,36 +1,38 @@
+import { Identifier } from '@maesa-admin/core';
 import { Button, Drawer, DrawerProps } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { IconPlus, IconX } from '@tabler/icons';
+import { IconEdit, IconX } from '@tabler/icons';
 import { FormikHelpers } from 'formik';
 import { ReactElement, useState } from 'react';
-import { CreateForm } from './CreateForm';
+import { EditForm } from './EditForm';
 
-export const CreateButton = (props: CreateButtonProps): JSX.Element => {
+export const EditButton = (props: EditButtonProps): JSX.Element => {
   const { drawer, fields, onSubmit } = props;
   const [isOpen, setOpen] = useState(false);
   return (
     <>
       <Button
-        leftIcon={<IconPlus size={14} />}
+        variant="subtle"
+        leftIcon={<IconEdit size={14} />}
         onClick={() => setOpen((o) => !o)}
       >
-        Create
+        Edit
       </Button>
       <Drawer
         {...drawer}
-        title="Create"
+        title={'Edit'}
         padding={'xl'}
         size="xl"
         opened={isOpen}
         onClose={() => setOpen(false)}
       >
         {isOpen && (
-          <CreateForm
+          <EditForm
             fields={fields}
-            onSubmit={(values, helpers) => {
+            onSubmit={(id, values, helpers) => {
               const { setSubmitting, setErrors } = helpers;
               try {
-                onSubmit(values, helpers);
+                onSubmit(id, values, helpers);
                 setOpen(false);
               } catch (err: any) {
                 setErrors({
@@ -53,8 +55,8 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
   );
 };
 
-export interface CreateButtonProps<T = { [key: string]: any }> {
+export interface EditButtonProps<T = { [key: string]: any }> {
   drawer?: DrawerProps;
   fields: ReactElement[];
-  onSubmit: (values: T, helpers: FormikHelpers<T>) => void;
+  onSubmit: (id: Identifier, values: T, helpers: FormikHelpers<T>) => void;
 }

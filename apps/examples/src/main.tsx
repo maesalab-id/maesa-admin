@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 root.render(
   <StrictMode>
     <MantineProvider>
-      <NotificationsProvider>
+      <NotificationsProvider position="bottom-center">
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <ReactQueryDevtools initialIsOpen={false} />

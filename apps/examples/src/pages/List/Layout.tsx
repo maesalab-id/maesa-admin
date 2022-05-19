@@ -4,7 +4,10 @@ import {
   TextField,
   TextInput,
   CreateButton,
+  EditButton,
+  PreviewButton,
 } from '@maesa-admin/ui-mantine';
+import { Box } from '@mantine/core';
 
 const createFields = [
   <TextInput label="Name" source="name" />,
@@ -25,20 +28,14 @@ export const Layout = () => {
           fields={createFields}
           onSubmit={(values) => {
             console.log(values);
-            throw new Error("unknown");
+            throw new Error('unknown');
           }}
         />
       }
       queryFn={() => {
         const data = [
-          {
-            id: 1,
-            name: 'Foo',
-          },
-          {
-            id: 2,
-            name: 'Bar',
-          },
+          { id: 1, name: 'Foo' },
+          { id: 2, name: 'Bar' },
         ];
         return {
           limit: 0,
@@ -51,6 +48,21 @@ export const Layout = () => {
       <Table>
         <TextField label="Id" source="id" />
         <TextField label={'Name'} source="name" />
+        <Box sx={{ justifyContent: 'right', display: 'flex' }}>
+          <EditButton
+            fields={createFields}
+            onSubmit={(id, values) => {
+              console.log(id, values);
+              throw new Error(`ERROR ${id}`);
+            }}
+          />
+          <PreviewButton
+            fields={[
+              <TextField label="Id" source="id" />,
+              <TextField label="Name" source="name" />,
+            ]}
+          />
+        </Box>
       </Table>
     </ListBase>
   );
