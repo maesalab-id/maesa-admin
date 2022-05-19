@@ -68,5 +68,10 @@ export const EditForm = (props: EditFormProps): JSX.Element => {
 export interface EditFormProps<T = { [key: string]: any }> {
   initialValues?: any;
   fields: ReactElement[];
-  onSubmit: (id: Identifier, values: T, helpers: FormikHelpers<T>) => void;
+
+  onSubmit: (
+    id: Identifier,
+    values: T,
+    formikHelpers: FormikHelpers<T>
+  ) => void | Promise<any>;
 }

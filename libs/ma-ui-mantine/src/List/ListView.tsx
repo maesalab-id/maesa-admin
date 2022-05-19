@@ -1,5 +1,5 @@
 import { Card } from '@mantine/core';
-import { ElementType, ReactElement } from 'react';
+import React, { ElementType, ReactElement, useCallback, useMemo } from 'react';
 import { MaRecord, useListContext } from '@maesa-admin/core';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from '../Pagination';
@@ -16,7 +16,7 @@ export const ListView = <RecordType extends MaRecord = any>(
     component: Content = DefaultComponent,
     pagination = <DefaultPagination />,
     filters,
-    actions,
+    actions: actionFn,
   } = props;
 
   const { data, isLoading } = useListContext<RecordType>(props);
@@ -24,6 +24,16 @@ export const ListView = <RecordType extends MaRecord = any>(
   if (!children || (!data && isLoading)) {
     return null;
   }
+
+  const actions = useMemo<ReactElement | null | undefined>(() => {
+    let result;
+    if (typeof actionFn === 'function') {
+      result = actionFn();
+    } else {
+      result = actionFn;
+    }
+    return result;
+  }, [actionFn]);
 
   return (
     <div>
@@ -35,7 +45,7 @@ export const ListView = <RecordType extends MaRecord = any>(
 };
 
 export interface ListViewProps {
-  actions?: ReactElement | null;
+  actions?: ReactElement | (() => ReactElement) | null;
   children: ReactElement | ReactElement[];
   component?: ElementType;
   pagination?: ReactElement | null;

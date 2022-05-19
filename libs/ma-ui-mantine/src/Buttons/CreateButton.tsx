@@ -27,10 +27,10 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
         {isOpen && (
           <CreateForm
             fields={fields}
-            onSubmit={(values, helpers) => {
+            onSubmit={async (values, helpers) => {
               const { setSubmitting, setErrors } = helpers;
               try {
-                onSubmit(values, helpers);
+                await onSubmit(values, helpers);
                 setOpen(false);
               } catch (err: any) {
                 setErrors({
@@ -56,5 +56,5 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
 export interface CreateButtonProps<T = { [key: string]: any }> {
   drawer?: DrawerProps;
   fields: ReactElement[];
-  onSubmit: (values: T, helpers: FormikHelpers<T>) => void;
+  onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<any>;
 }

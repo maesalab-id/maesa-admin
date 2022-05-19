@@ -78,7 +78,7 @@ export const useListController = <RecordType extends MaRecord = any>(
       }),
     {
       ...queryOptions,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -100,6 +100,7 @@ export const useListController = <RecordType extends MaRecord = any>(
     isFetching,
 
     selectedIds,
+    selecting: selectionModifier.select,
     toggleSelection: selectionModifier.toggle,
     clearSelection: selectionModifier.clearSelection,
 
@@ -144,6 +145,7 @@ export interface ListControllerResult<RecordType extends MaRecord = any> {
   isFetching: boolean;
 
   selectedIds: RecordType['id'][];
+  selecting: (ids: RecordType['id'][]) => void;
   toggleSelection: (id: RecordType['id']) => void;
   clearSelection: () => void;
 }

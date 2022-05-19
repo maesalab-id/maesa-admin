@@ -8,6 +8,9 @@ export const ListContext = createContext<ListControllerResult>({
   isLoading: false,
 
   selectedIds: [],
+  selecting: () => {
+    /* no-op */
+  },
   toggleSelection: () => {
     /* no-op */
   },

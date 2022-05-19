@@ -1,7 +1,5 @@
-import { Identifier } from '@maesa-admin/core';
-import { Button, Drawer, DrawerProps } from '@mantine/core';
+import { ActionIcon, Drawer, DrawerProps, Tooltip } from '@mantine/core';
 import { IconEye } from '@tabler/icons';
-import { FormikHelpers } from 'formik';
 import { ReactElement, ReactNode, useState } from 'react';
 import { PreviewForm } from './PreviewForm';
 
@@ -10,13 +8,15 @@ export const PreviewButton = (props: PreviewButtonProps): JSX.Element => {
   const [isOpen, setOpen] = useState(false);
   return (
     <>
-      <Button
-        variant="subtle"
-        leftIcon={<IconEye size={14} />}
-        onClick={() => setOpen((o) => !o)}
-      >
-        Preview
-      </Button>
+      <Tooltip label="Preview" position="left" withArrow={true}>
+        <ActionIcon
+          color="primary"
+          size="lg"
+          onClick={() => setOpen((o) => !o)}
+        >
+          <IconEye size={14} />
+        </ActionIcon>
+      </Tooltip>
       <Drawer
         {...drawer}
         title={'Preview'}

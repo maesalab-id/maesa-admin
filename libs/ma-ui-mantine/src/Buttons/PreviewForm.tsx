@@ -9,7 +9,11 @@ export const PreviewForm = (props: PreviewFormProps): JSX.Element => {
     <>
       {!children &&
         fields?.map((el) => {
-          return <Box mb="md">{cloneElement(el)}</Box>;
+          return (
+            <Box key={el.props.source} mb="md">
+              {cloneElement(el)}
+            </Box>
+          );
         })}
       {children}
     </>

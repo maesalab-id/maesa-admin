@@ -36,6 +36,7 @@ const extractListContextProps = ({
   setSort,
 
   selectedIds,
+  selecting,
   toggleSelection,
   clearSelection,
 }: ListControllerResult): ListControllerResult => ({
@@ -58,6 +59,7 @@ const extractListContextProps = ({
   setSort,
 
   selectedIds,
+  selecting,
   toggleSelection,
   clearSelection,
 })

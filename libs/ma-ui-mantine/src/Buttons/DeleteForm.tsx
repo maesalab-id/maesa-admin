@@ -47,5 +47,5 @@ export const CreateForm = (props: CreateFormProps): JSX.Element => {
 export interface CreateFormProps<T = { [key: string]: any }> {
   initialValues?: any;
   fields: ReactElement[];
-  onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
+  onSubmit: (values: T, helpers: FormikHelpers<T>) => void;
 }

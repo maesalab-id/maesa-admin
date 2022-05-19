@@ -38,7 +38,7 @@ export const TextInput = (props: TextInputProps): JSX.Element => {
     <MtTextInput
       label={!minimal && label}
       placeholder={placeholder}
-      value={value || ''}
+      value={value || undefined}
       onChange={(e) => {
         const value = e.target.value;
         setValue(value);
