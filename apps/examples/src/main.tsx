@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -16,12 +17,14 @@ const queryClient = new QueryClient();
 root.render(
   <StrictMode>
     <MantineProvider>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <App />
-        </QueryClientProvider>
-      </BrowserRouter>
+      <NotificationsProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <App />
+          </QueryClientProvider>
+        </BrowserRouter>
+      </NotificationsProvider>
     </MantineProvider>
   </StrictMode>
 );

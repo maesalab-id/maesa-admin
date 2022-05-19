@@ -1,7 +1,9 @@
 import { Button, Drawer } from '@mantine/core';
-import { IconPlus } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
+import { IconPlus, IconX } from '@tabler/icons';
+import { FormikHelpers } from 'formik';
 import { ReactElement, useState } from 'react';
-import { CreateForm } from './CreateForm';
+import { CreateForm, CreateFormProps } from './CreateForm';
 
 export const CreateButton = (props: CreateButtonProps): JSX.Element => {
   const { fields, onSubmit } = props;
@@ -21,13 +23,33 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
         opened={isOpen}
         onClose={() => setOpen(false)}
       >
-        <CreateForm fields={fields} onSubmit={onSubmit} />
+        {isOpen && (
+          <CreateForm
+            fields={fields}
+            onSubmit={(values, helpers) => {
+              const { setSubmitting } = helpers;
+              try {
+                onSubmit(values, helpers);
+                setOpen(false);
+              } catch (err: any) {
+                showNotification({
+                  color: "red",
+                  icon: <IconX size={18} />,
+                  title: 'Error while submitting',
+                  message: err.message,
+                });
+                console.error(err.message);
+              }
+              setSubmitting(false);
+            }}
+          />
+        )}
       </Drawer>
     </>
   );
 };
 
-export interface CreateButtonProps {
+export interface CreateButtonProps<T = { [key: string]: any }> {
   fields: ReactElement[];
-  onSubmit: (values: any) => void;
+  onSubmit: (values: T, helpers: FormikHelpers<T>) => void;
 }

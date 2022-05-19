@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { IconBackspace } from '@tabler/icons';
 import { CommonInputProps } from './types';
 import { useField } from 'formik';
+import { rest } from 'lodash';
 
 interface TextInputProps extends CommonInputProps {
   minimal?: boolean;
@@ -17,6 +18,9 @@ export const TextInput = (props: TextInputProps): JSX.Element => {
     placeholder: initialPlaceholder,
     isLoading = false,
     source = 'q',
+    defaultValue,
+    alwaysOn,
+    ...rest
   } = props;
 
   const [{ value }, meta, { setValue }] = useField({
@@ -48,6 +52,7 @@ export const TextInput = (props: TextInputProps): JSX.Element => {
           </ActionIcon>
         ) : null
       }
+      {...rest}
     />
   );
 };

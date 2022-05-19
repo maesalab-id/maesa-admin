@@ -25,6 +25,7 @@ export const Layout = () => {
           fields={createFields}
           onSubmit={(values) => {
             console.log(values);
+            throw new Error("unknown");
           }}
         />
       }
