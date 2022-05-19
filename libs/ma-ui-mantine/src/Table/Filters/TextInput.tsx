@@ -5,6 +5,7 @@ import { CommonInputProps } from './types';
 import { useField } from 'formik';
 
 interface TextInputProps extends CommonInputProps {
+  minimal?: boolean;
   source?: string;
   isLoading?: boolean;
 }
@@ -12,6 +13,7 @@ interface TextInputProps extends CommonInputProps {
 export const TextInput = (props: TextInputProps): JSX.Element => {
   const {
     label,
+    minimal = false,
     placeholder: initialPlaceholder,
     isLoading = false,
     source = 'q',
@@ -24,11 +26,13 @@ export const TextInput = (props: TextInputProps): JSX.Element => {
   const placeholder = useMemo<string>((): string => {
     let l = label;
     if (typeof l !== 'string') l = undefined;
+    if (!minimal) l = undefined;
     return initialPlaceholder || l || source;
-  }, [initialPlaceholder, label]);
+  }, [initialPlaceholder, label, minimal]);
 
   return (
     <MtTextInput
+      label={!minimal && label}
       placeholder={placeholder}
       value={value || ''}
       onChange={(e) => {

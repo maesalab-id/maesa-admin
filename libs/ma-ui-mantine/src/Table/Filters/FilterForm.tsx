@@ -68,7 +68,7 @@ export const FilterFormBase = (props: FilterFormBaseProps): JSX.Element => {
     if (!filters) return;
     for (let f of filters) {
       const key = f.props.source;
-      if (_get(displayedFilters, key) !== true) {
+      if (!f.props.alwaysOn && _get(displayedFilters, key) !== true) {
         _unset(form.values, key);
       }
     }
