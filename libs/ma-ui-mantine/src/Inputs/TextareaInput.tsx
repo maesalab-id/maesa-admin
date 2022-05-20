@@ -1,11 +1,6 @@
-import {
-  ActionIcon,
-  Loader,
-  TextInput as MtTextInput,
-  PasswordInput as MtPasswordInput,
-} from '@mantine/core';
+import { ActionIcon, Loader, Textarea } from '@mantine/core';
 import { HTMLInputTypeAttribute, InputHTMLAttributes, useMemo } from 'react';
-import { IconBackspace, IconMinus } from '@tabler/icons';
+import { IconBackspace } from '@tabler/icons';
 import { CommonInputProps } from '../Table/Filters/types';
 import { useField } from 'formik';
 
@@ -13,18 +8,9 @@ interface TextInputProps extends CommonInputProps {
   minimal?: boolean;
   source?: string;
   isLoading?: boolean;
-  type?:
-    | 'number'
-    | 'email'
-    | 'password'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url'
-    | undefined;
 }
 
-export const TextInput = (props: TextInputProps): JSX.Element => {
+export const TextareaInput = (props: TextInputProps): JSX.Element => {
   const {
     label,
     minimal = false,
@@ -47,38 +33,19 @@ export const TextInput = (props: TextInputProps): JSX.Element => {
     return initialPlaceholder || l || source;
   }, [initialPlaceholder, label, minimal]);
 
-  const conditionalProps = {
-    value: value || '',
-    type: rest.type,
-  };
-
-  const InputComponent =
-    rest.type === 'password' ? MtPasswordInput : MtTextInput;
-
-  if (rest.type === 'password') {
-    conditionalProps.type = undefined;
-    conditionalProps.value = undefined;
-  }
-
   return (
-    <InputComponent
+    <Textarea
+      autosize={true}
       label={!minimal && label}
       placeholder={placeholder}
+      value={value || ''}
       onChange={(e) => {
         const value = e.target.value;
         setValue(value);
       }}
-      rightSection={
-        isLoading ? (
-          <Loader size="sm" />
-        ) : value ? (
-          <ActionIcon tabIndex={-1} onClick={() => setValue('')}>
-            <IconBackspace />
-          </ActionIcon>
-        ) : null
-      }
+      minRows={2}
+      rightSection={isLoading ? <Loader size="sm" /> : null}
       {...rest}
-      {...conditionalProps}
     />
   );
 };

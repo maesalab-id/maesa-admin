@@ -1,19 +1,11 @@
 import { Card } from '@mantine/core';
-import React, {
-  ElementType,
-  isValidElement,
-  ReactElement,
-  useCallback,
-  useMemo,
-} from 'react';
+import { ElementType, isValidElement, ReactElement, useMemo } from 'react';
 import { MaRecord, useListContext } from '@maesa-admin/core';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from '../Pagination';
 import { BulkActionsToolbar } from './BulkActionsToolbar';
 
-const DefaultComponent = (props: any) => (
-  <Card shadow="md" mb="sm" px={0} {...props} />
-);
+const DefaultComponent = (props: any) => <Card mb="sm" px={0} {...props} />;
 
 export const ListView = <RecordType extends MaRecord = any>(
   props: ListViewProps
@@ -29,10 +21,6 @@ export const ListView = <RecordType extends MaRecord = any>(
 
   const { data, isLoading, selectedIds } = useListContext<RecordType>(props);
 
-  if (!children || (!data && isLoading)) {
-    return null;
-  }
-
   const actions = useMemo<ReactElement | null | undefined>(() => {
     let result;
     if (typeof actionFn === 'function') {
@@ -42,6 +30,10 @@ export const ListView = <RecordType extends MaRecord = any>(
     }
     return result;
   }, [actionFn]);
+
+  if (!children || (!data && isLoading)) {
+    return null;
+  }
 
   return (
     <div>

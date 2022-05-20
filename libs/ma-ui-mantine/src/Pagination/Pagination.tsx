@@ -1,14 +1,13 @@
+import { Pagination as MtPagination } from '@mantine/core';
+import { useListPaginationContext } from '@maesa-admin/core';
+import { FC } from 'react';
 
-import { Pagination as MtPagination } from "@mantine/core"
-import { useListPaginationContext } from "@maesa-admin/core";
-import { FC } from "react";
-
-export const Pagination: FC<PaginationProps> = (props) => {
+export const Pagination = (props: PaginationProps): JSX.Element | null => {
   const {
     total: initialTotal,
     page,
     limit,
-    setPage
+    setPage,
   } = useListPaginationContext(props);
 
   const total = Math.abs(initialTotal / limit);
@@ -22,11 +21,12 @@ export const Pagination: FC<PaginationProps> = (props) => {
           setPage(page);
         }}
         page={page}
-        total={total} />
+        total={total}
+      />
     </div>
-  )
-}
+  );
+};
 
 export interface PaginationProps {
-  // actions?: FC;
+  onChange?: (arg: void) => void;
 }

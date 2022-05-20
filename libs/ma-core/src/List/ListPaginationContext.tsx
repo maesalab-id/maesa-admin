@@ -33,8 +33,8 @@ export const usePickPaginationContext = (
         'setLimit',
         'total',
       ]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
-      // eslint-disable-line react-hooks/exhaustive-deps
       contex.isLoading,
       contex.page,
       contex.limit,

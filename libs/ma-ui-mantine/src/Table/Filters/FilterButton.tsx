@@ -43,7 +43,7 @@ export const FilterButton = (props: FilterButtonProps): ReactElement | null => {
     <div>
       <Menu
         control={
-          <ActionIcon variant="light" disabled={hiddenFilter.length === 0}>
+          <ActionIcon disabled={hiddenFilter.length === 0}>
             <IconFilter />
           </ActionIcon>
         }

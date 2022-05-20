@@ -4,6 +4,8 @@ import { MaRecord } from '../../types';
 
 export const ChoicesContext = createContext<ChoicesContextValue>({
   data: [],
+  choices: undefined,
+
   isFetching: false,
   isLoading: false,
   refetch: () => {
@@ -51,4 +53,6 @@ export const ChoicesContext = createContext<ChoicesContextValue>({
 });
 
 export interface ChoicesContextValue<RecordType extends MaRecord = any>
-  extends ListControllerResult<RecordType> {}
+  extends ListControllerResult<RecordType> {
+  choices?: { [key: string]: any };
+}

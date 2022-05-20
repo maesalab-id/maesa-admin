@@ -23,7 +23,9 @@ export const FilterForm: FC<FilterFormProps> = (props): ReactElement => {
     <Formik
       initialValues={initialValues}
       validateOnChange={false}
-      onSubmit={() => {}}
+      onSubmit={() => {
+        /* no-op */
+      }}
       enableReinitialize={false}
     >
       {({ handleSubmit }) => {
@@ -66,7 +68,7 @@ export const FilterFormBase = (props: FilterFormBaseProps): JSX.Element => {
 
   useEffect(() => {
     if (!filters) return;
-    for (let f of filters) {
+    for (const f of filters) {
       const key = f.props.source;
       if (!f.props.alwaysOn && _get(displayedFilters, key) !== true) {
         _unset(form.values, key);

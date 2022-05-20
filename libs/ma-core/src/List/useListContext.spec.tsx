@@ -18,6 +18,7 @@ describe('useListContext', () => {
   it('should return the listController props form the ListContext', () => {
     const { getByText } = render(
       <ListContext.Provider
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         value={{
           data: [{ id: 1, title: 'hello' }],
@@ -30,7 +31,9 @@ describe('useListContext', () => {
   });
 
   it('should return injected props if the context was not set', () => {
-    jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+    jest.spyOn(console, 'log').mockImplementationOnce(() => {
+      /* no-op */
+    });
     const { getByText } = render(
       <NaiveList resource="foo" data={[{ id: 1, title: 'hello' }]} />
     );

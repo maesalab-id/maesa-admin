@@ -8,6 +8,7 @@ import {
   PreviewButton,
   BulkDeleteButton,
   SelectInput,
+  TextareaInput,
 } from '@maesa-admin/ui-mantine';
 import { Box, Card, Group } from '@mantine/core';
 import { useDataContext } from '../../api/useDataContext';
@@ -16,7 +17,8 @@ const createFields = [
   <TextInput label="Name" source="name" />,
   <TextInput label="Username" source="username" defaultValue="ilomon" />,
   <TextInput label="Email" source="email" />,
-  <TextInput label="Password" source="password" />,
+  <TextInput label="Password" source="password" type="password" />,
+  <TextareaInput label="Description" source="description" />,
 ];
 
 const TableWrapper = (props: any) => {

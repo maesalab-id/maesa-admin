@@ -20,6 +20,7 @@ export const useChoicesContext = <RecordType extends MaRecord = any>(
 
 const extractListContextProps = ({
   data,
+  choices,
 
   refetch,
   isFetching,
@@ -44,6 +45,7 @@ const extractListContextProps = ({
   clearSelection,
 }: ChoicesContextValue): ChoicesContextValue => ({
   data,
+  choices,
 
   refetch,
   isFetching,

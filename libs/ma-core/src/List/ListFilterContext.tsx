@@ -19,8 +19,5 @@ export const usePickFilterContext = (
 ): ListFilterContextValue =>
   useMemo(() => {
     return pick(context, ['filterValues', 'setFilters']);
-  }, [
-    // eslint-disable-line react-hooks/exhaustive-deps
-    context.filterValues,
-    context.setFilters,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.filterValues, context.setFilters]);
