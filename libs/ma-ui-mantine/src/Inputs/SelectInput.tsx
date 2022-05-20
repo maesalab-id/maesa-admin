@@ -44,6 +44,7 @@ const SelectInputBase = (props: SelectInputBaseProps): JSX.Element => {
     source,
     defaultValue,
     placeholder: initialPlaceholder,
+    ...rest
   } = props;
 
   const { data, setFilters, displayedFilters, filterValues, isLoading } =
@@ -76,6 +77,7 @@ const SelectInputBase = (props: SelectInputBaseProps): JSX.Element => {
 
   return (
     <Select
+      {...rest}
       label={!minimal && label}
       placeholder={placeholder}
       searchable={true}
