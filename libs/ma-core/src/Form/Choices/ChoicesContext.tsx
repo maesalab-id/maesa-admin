@@ -1,8 +1,8 @@
 import { createContext } from 'react';
-import { SORT_ASC } from './queryReducer';
-import { ListControllerResult } from './useListController';
+import { ListControllerResult, SORT_ASC } from '../../List';
+import { MaRecord } from '../../types';
 
-export const ListContext = createContext<ListControllerResult>({
+export const ChoicesContext = createContext<ChoicesContextValue>({
   data: [],
   isFetching: false,
   isLoading: false,
@@ -49,3 +49,6 @@ export const ListContext = createContext<ListControllerResult>({
     /* no-op */
   },
 });
+
+export interface ChoicesContextValue<RecordType extends MaRecord = any>
+  extends ListControllerResult<RecordType> {}

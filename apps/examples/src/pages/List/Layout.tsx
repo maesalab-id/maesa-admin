@@ -7,8 +7,9 @@ import {
   EditButton,
   PreviewButton,
   BulkDeleteButton,
+  SelectInput,
 } from '@maesa-admin/ui-mantine';
-import { Box, Group } from '@mantine/core';
+import { Box, Card, Group } from '@mantine/core';
 import { useDataContext } from '../../api/useDataContext';
 
 const createFields = [
@@ -18,6 +19,10 @@ const createFields = [
   <TextInput label="Password" source="password" />,
 ];
 
+const TableWrapper = (props: any) => {
+  return <Card mb="sm" px={0} {...props} />;
+};
+
 export const Layout = () => {
   const { getList } = useDataContext();
   const testCallback = async () => {
@@ -25,6 +30,7 @@ export const Layout = () => {
   };
   return (
     <ListBase
+      component={TableWrapper}
       bulkActionButtons={
         <>
           <BulkDeleteButton
@@ -36,6 +42,22 @@ export const Layout = () => {
       }
       filters={[
         <TextInput label="Search" source="q" alwaysOn={true} />,
+        <SelectInput
+          label="Role"
+          source="role"
+          queryFn={({ pagination }) => {
+            const data = getList({
+              skip: pagination?.skip,
+            });
+            return data;
+          }}
+          choices={(data) => {
+            return data.map(({ id, name }) => ({
+              value: id,
+              label: name,
+            }));
+          }}
+        />,
         <TextInput label="Id" source="id" />,
       ]}
       actions={() => (

@@ -15,3 +15,10 @@ export interface SortPayload {
   field: string;
   order: string;
 }
+
+export interface GetListResult<RecordType extends MaRecord = any> {
+  data: RecordType[];
+  total: number;
+  skip: number;
+  limit: number;
+}

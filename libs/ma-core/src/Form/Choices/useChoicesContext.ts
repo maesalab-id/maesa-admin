@@ -1,13 +1,12 @@
 import { useContext, useMemo } from 'react';
-import { MaRecord } from '../types';
-import { ListContext } from './ListContext';
-import { ListControllerResult } from './useListController';
 import defaults from 'lodash/defaults';
+import { ChoicesContext, ChoicesContextValue } from './ChoicesContext';
+import { MaRecord } from '../../types';
 
-export const useListContext = <RecordType extends MaRecord = any>(
+export const useChoicesContext = <RecordType extends MaRecord = any>(
   props?: any
-): ListControllerResult<RecordType> => {
-  const context = useContext(ListContext);
+): ChoicesContextValue<RecordType> => {
+  const context = useContext(ChoicesContext);
   return useMemo(
     () =>
       defaults(
@@ -43,7 +42,7 @@ const extractListContextProps = ({
   selecting,
   toggleSelection,
   clearSelection,
-}: ListControllerResult): ListControllerResult => ({
+}: ChoicesContextValue): ChoicesContextValue => ({
   data,
 
   refetch,

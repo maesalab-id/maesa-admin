@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 import { FilterPayload, MaRecord, SortPayload } from '../types';
 import { SORT_ASC } from './queryReducer';
 import { useListParams } from './useListParams';
@@ -55,6 +55,8 @@ export const useListController = <RecordType extends MaRecord = any>(
 
   const {
     data: originalData,
+    refetch,
+    error,
     isLoading,
     isFetching,
   } = useQuery(
@@ -83,11 +85,12 @@ export const useListController = <RecordType extends MaRecord = any>(
   );
 
   const { data, total } = useMemo(() => {
-    if (!originalData)
+    if (!originalData) {
       return {
         total: 0,
         data: [],
       };
+    }
     return {
       total: originalData.total,
       data: originalData.data,
@@ -96,8 +99,10 @@ export const useListController = <RecordType extends MaRecord = any>(
 
   return {
     data,
+    error,
     isLoading,
     isFetching,
+    refetch,
 
     selectedIds,
     selecting: selectionModifier.select,
@@ -124,6 +129,7 @@ export const useListController = <RecordType extends MaRecord = any>(
 
 export interface ListControllerResult<RecordType extends MaRecord = any> {
   data: RecordType[];
+  error?: any;
   filter?: FilterPayload;
   filterValues: any;
   displayedFilters: {
@@ -143,6 +149,7 @@ export interface ListControllerResult<RecordType extends MaRecord = any> {
 
   isLoading: boolean;
   isFetching: boolean;
+  refetch: UseQueryResult['refetch'] | (() => void);
 
   selectedIds: RecordType['id'][];
   selecting: (ids: RecordType['id'][]) => void;

@@ -1,9 +1,8 @@
 import { ActionIcon, Loader, TextInput as MtTextInput } from '@mantine/core';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { IconBackspace } from '@tabler/icons';
-import { CommonInputProps } from './types';
+import { CommonInputProps } from '../Table/Filters/types';
 import { useField } from 'formik';
-import { rest } from 'lodash';
 
 interface TextInputProps extends CommonInputProps {
   minimal?: boolean;
