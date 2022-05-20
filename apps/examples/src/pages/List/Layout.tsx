@@ -6,6 +6,7 @@ import {
   CreateButton,
   EditButton,
   PreviewButton,
+  BulkDeleteButton,
 } from '@maesa-admin/ui-mantine';
 import { Box, Group } from '@mantine/core';
 import { useDataContext } from '../../api/useDataContext';
@@ -24,6 +25,15 @@ export const Layout = () => {
   };
   return (
     <ListBase
+      bulkActionButtons={
+        <>
+          <BulkDeleteButton
+            onSubmit={(ids) => {
+              console.log(ids);
+            }}
+          />
+        </>
+      }
       filters={[
         <TextInput label="Search" source="q" alwaysOn={true} />,
         <TextInput label="Id" source="id" />,

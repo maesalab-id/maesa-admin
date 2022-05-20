@@ -122,7 +122,6 @@ export const useListParams = ({
 
   const setPage = useCallback(
     (newPage: number) => {
-      console.log('SET PAGE', newPage);
       changeParams({ type: SET_PAGE, payload: newPage });
     },
     requestSignature // eslint-disable-line react-hooks/exhaustive-deps

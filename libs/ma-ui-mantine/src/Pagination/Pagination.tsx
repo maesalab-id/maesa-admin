@@ -19,7 +19,6 @@ export const Pagination: FC<PaginationProps> = (props) => {
     <div>
       <MtPagination
         onChange={(page) => {
-          console.log("onChange", page);
           setPage(page);
         }}
         page={page}
