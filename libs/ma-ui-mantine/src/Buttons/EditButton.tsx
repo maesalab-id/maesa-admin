@@ -1,14 +1,16 @@
-import { Identifier } from '@maesa-admin/core';
+import { Identifier, useListContext } from '@maesa-admin/core';
 import { ActionIcon, Drawer, DrawerProps, Tooltip } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconEdit, IconX } from '@tabler/icons';
 import { FormikHelpers } from 'formik';
 import { ReactElement, useState } from 'react';
 import { EditForm } from './EditForm';
+import { ListHelper } from './types';
 
 export const EditButton = (props: EditButtonProps): JSX.Element => {
   const { drawer, fields, onSubmit } = props;
   const [isOpen, setOpen] = useState(false);
+  const { refetch } = useListContext();
   return (
     <>
       <Tooltip label="Edit" position="left" withArrow={true}>
@@ -34,7 +36,7 @@ export const EditButton = (props: EditButtonProps): JSX.Element => {
             onSubmit={async (id, values, helpers) => {
               const { setSubmitting, setErrors } = helpers;
               try {
-                await onSubmit(id, values, helpers);
+                await onSubmit(id, values, helpers, { refetch });
                 setOpen(false);
               } catch (err: any) {
                 setErrors({
@@ -64,6 +66,7 @@ export interface EditButtonProps<T = { [key: string]: any }> {
   onSubmit: (
     id: Identifier,
     values: T,
-    formikHelpers: FormikHelpers<T>
+    formikHelpers: FormikHelpers<T>,
+    listHelper: ListHelper
   ) => void | Promise<any>;
 }

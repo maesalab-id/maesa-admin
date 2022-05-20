@@ -6,14 +6,7 @@ import {
   useChoicesContext,
   useListController,
 } from '@maesa-admin/core';
-import {
-  Group,
-  Loader,
-  Select,
-  SelectItem,
-  SelectItemProps,
-  Text,
-} from '@mantine/core';
+import { Group, Loader, Select, SelectItem, Text } from '@mantine/core';
 import { SelectSharedProps } from '@mantine/core/lib/components/Select/Select';
 import { useField } from 'formik';
 import { useMemo } from 'react';

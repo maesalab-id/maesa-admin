@@ -2,13 +2,17 @@ import { Identifier, useListContext } from '@maesa-admin/core';
 import { Button, Menu, MenuItem, MenuLabel, MenuProps } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck, IconX, IconTrash } from '@tabler/icons';
+import { ListHelper } from './types';
 
 export const BulkDeleteButton = (props: BulkDeleteButtonProps): JSX.Element => {
   const { menuProps, onSubmit } = props;
-  const { selectedIds } = useListContext();
+  const { selectedIds, refetch } = useListContext();
+  const listHelper = {
+    refetch,
+  };
   const handleSubmit = async () => {
     try {
-      await onSubmit(selectedIds);
+      await onSubmit(selectedIds, listHelper);
       showNotification({
         title: 'Deleting',
         message: 'Successfully delete items',
@@ -59,5 +63,5 @@ export const BulkDeleteButton = (props: BulkDeleteButtonProps): JSX.Element => {
 
 export interface BulkDeleteButtonProps {
   menuProps?: MenuProps;
-  onSubmit: (ids: Identifier[]) => void;
+  onSubmit: (ids: Identifier[], listHelper: ListHelper) => void;
 }

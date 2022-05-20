@@ -1,13 +1,16 @@
+import { useListContext } from '@maesa-admin/core';
 import { Button, Drawer, DrawerProps } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconPlus, IconX } from '@tabler/icons';
 import { FormikHelpers } from 'formik';
 import { ReactElement, useState } from 'react';
 import { CreateForm } from './CreateForm';
+import { ListHelper } from './types';
 
 export const CreateButton = (props: CreateButtonProps): JSX.Element => {
   const { drawer, fields, onSubmit } = props;
   const [isOpen, setOpen] = useState(false);
+  const { refetch } = useListContext();
   return (
     <>
       <Button
@@ -30,7 +33,7 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
             onSubmit={async (values, helpers) => {
               const { setSubmitting, setErrors } = helpers;
               try {
-                await onSubmit(values, helpers);
+                await onSubmit(values, helpers, { refetch });
                 setOpen(false);
               } catch (err: any) {
                 setErrors({
@@ -56,5 +59,9 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
 export interface CreateButtonProps<T = { [key: string]: any }> {
   drawer?: DrawerProps;
   fields: ReactElement[];
-  onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<any>;
+  onSubmit: (
+    values: T,
+    helpers: FormikHelpers<T>,
+    listHelper: ListHelper
+  ) => void | Promise<any>;
 }

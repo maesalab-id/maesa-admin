@@ -34,8 +34,9 @@ export const Layout = () => {
       bulkActionButtons={
         <>
           <BulkDeleteButton
-            onSubmit={(ids) => {
+            onSubmit={(ids, { refetch }) => {
               console.log(ids);
+              refetch();
             }}
           />
         </>
