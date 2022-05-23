@@ -6,7 +6,7 @@ import { ListHelper } from './types';
 
 export const BulkDeleteButton = (props: BulkDeleteButtonProps): JSX.Element => {
   const { menuProps, onSubmit } = props;
-  const { selectedIds, refetch } = useListContext();
+  const { selectedIds, clearSelection, refetch } = useListContext();
   const listHelper = {
     refetch,
   };
@@ -19,6 +19,7 @@ export const BulkDeleteButton = (props: BulkDeleteButtonProps): JSX.Element => {
         color: 'green',
         icon: <IconCheck />,
       });
+      clearSelection();
     } catch (err: any) {
       console.error(err.message);
       showNotification({

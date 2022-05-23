@@ -1,11 +1,18 @@
-import { Box, Button, Group, Notification } from '@mantine/core';
+import { Box, Button, Group } from '@mantine/core';
 import { Formik, FormikHelpers } from 'formik';
 import { cloneElement, ReactElement, useMemo } from 'react';
 import _get from 'lodash/get';
-import { Identifier, useRecordContext } from '@maesa-admin/core';
+import {
+  Identifier,
+  useListContext,
+  useRecordContext,
+} from '@maesa-admin/core';
+import { ListHelper } from './types';
 
 export const EditForm = (props: EditFormProps): JSX.Element => {
   const { fields, onSubmit } = props;
+
+  const { refetch } = useListContext();
 
   const record = useRecordContext(props);
 
@@ -21,10 +28,14 @@ export const EditForm = (props: EditFormProps): JSX.Element => {
     return values;
   }, [fields]);
 
+  const listHelper = {
+    refetch,
+  };
+
   return (
     <Formik
       onSubmit={(values, helpers) =>
-        onSubmit(_get(record, 'id') as Identifier, values, helpers)
+        onSubmit(_get(record, 'id') as Identifier, values, helpers, listHelper)
       }
       initialValues={initialValues}
     >
@@ -72,6 +83,7 @@ export interface EditFormProps<T = { [key: string]: any }> {
   onSubmit: (
     id: Identifier,
     values: T,
-    formikHelpers: FormikHelpers<T>
+    formikHelpers: FormikHelpers<T>,
+    listHelpers: ListHelper
   ) => void | Promise<any>;
 }
