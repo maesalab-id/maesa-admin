@@ -46,9 +46,9 @@ export const Layout = () => {
         <SelectInput
           label="Role"
           source="role"
-          queryFn={({ pagination }) => {
-            const data = getList({
-              skip: pagination?.skip,
+          queryFn={async ({ pagination }) => {
+            const data = await getList('people', {
+              page: pagination?.page,
             });
             return data;
           }}
@@ -65,11 +65,11 @@ export const Layout = () => {
         <Group>
           <CreateButton
             initialValues={{
-              name: "",
-              username: "",
-              email: "",
-              password: "",
-              description: "",
+              name: '',
+              username: '',
+              email: '',
+              password: '',
+              description: '',
             }}
             onSubmit={async (values) => {
               console.log(values);
@@ -80,9 +80,10 @@ export const Layout = () => {
           </CreateButton>
         </Group>
       )}
-      queryFn={({ pagination }) => {
-        const data = getList({
-          skip: pagination?.skip,
+      queryFn={async ({ pagination }) => {
+        console.log(pagination);
+        const data = await getList('people', {
+          page: pagination?.skip,
         });
         return {
           limit: data.limit,

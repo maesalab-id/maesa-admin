@@ -4,6 +4,7 @@
   "projects": {
     "examples": "apps/examples",
     "examples-e2e": "apps/examples-e2e",
+    "fake-server": "apps/fake-server",
     "ma-core": "libs/ma-core",
     "ma-ui-mantine": "libs/ma-ui-mantine"
   }

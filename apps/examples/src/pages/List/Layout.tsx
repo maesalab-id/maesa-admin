@@ -44,13 +44,18 @@ export const Layout = () => {
         </>
       }
       filters={[
-        <TextInput label="Search" source="q" alwaysOn={true} data-filter-field="search" />,
+        <TextInput
+          label="Search"
+          source="q"
+          alwaysOn={true}
+          data-filter-field="search"
+        />,
         <SelectInput
           label="Role"
           source="role"
           queryFn={({ pagination }) => {
-            const data = getList({
-              skip: pagination?.skip,
+            const data = getList('people', {
+              page: pagination?.skip,
             });
             return data;
           }}
@@ -74,9 +79,9 @@ export const Layout = () => {
           />
         </Group>
       )}
-      queryFn={({ pagination }) => {
-        const data = getList({
-          skip: pagination?.skip,
+      queryFn={async ({ pagination }) => {
+        const data = await getList('people', {
+          page: pagination?.page,
         });
         return {
           limit: data.limit,
