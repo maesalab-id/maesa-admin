@@ -14,7 +14,7 @@ export const Pagination = (props: PaginationProps): JSX.Element | null => {
 
   const total = Math.abs(initialTotal / limit);
 
-  if (total < limit) return null;
+  if (initialTotal < limit) return null;
 
   return (
     <div {...rest}>
