@@ -1,6 +1,6 @@
 import { Box, Button, Group } from '@mantine/core';
 import { Formik, FormikHelpers } from 'formik';
-import { cloneElement, ReactElement, useMemo } from 'react';
+import { cloneElement, ReactElement, ReactNode, useMemo } from 'react';
 import _get from 'lodash/get';
 import {
   Identifier,
@@ -10,38 +10,39 @@ import {
 import { ListHelper } from './types';
 
 export const EditForm = (props: EditFormProps): JSX.Element => {
-  const { fields, onSubmit } = props;
+  const { children, fields, validateOnChange, validationSchema, onSubmit } =
+    props;
 
   const { refetch } = useListContext();
 
   const record = useRecordContext(props);
 
   const initialValues = useMemo(() => {
-    const values = fields.reduce<{ [key: string]: any }>(
-      (currentValues, el) => {
-        currentValues[el.props.source] =
-          _get(record, el.props.source) || el.props.defaultValue || undefined;
-        return currentValues;
-      },
-      {}
-    );
+    if (props.initialValues) return props.initialValues;
+    let values = fields?.reduce<{ [key: string]: any }>((currentValues, el) => {
+      currentValues[el.props.source] = el.props.defaultValue || undefined;
+      return currentValues;
+    }, {});
     return values;
-  }, [fields]);
+  }, [props.initialValues, fields]);
 
-  const listHelper = {
+  const listHelper: ListHelper = {
     refetch,
   };
 
   return (
     <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      validateOnChange={validateOnChange}
       onSubmit={(values, helpers) =>
         onSubmit(_get(record, 'id') as Identifier, values, helpers, listHelper)
       }
-      initialValues={initialValues}
     >
       {({ values, errors, handleSubmit, resetForm, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
-          {fields.map((el) => {
+          {children}
+          {fields?.map((el) => {
             return cloneElement(el, {
               key: el.props.source,
               value: values[el.props.source],
@@ -76,14 +77,33 @@ export const EditForm = (props: EditFormProps): JSX.Element => {
   );
 };
 
-export interface EditFormProps<T = { [key: string]: any }> {
-  initialValues?: any;
-  fields: ReactElement[];
+export type EditFormProps<T = { [key: string]: any }> =
+  | EditFormPrimaryProps<T>
+  | EditFormAlternativeProps<T>;
 
-  onSubmit: (
-    id: Identifier,
-    values: T,
-    formikHelpers: FormikHelpers<T>,
-    listHelpers: ListHelper
-  ) => void | Promise<any>;
+export interface EditFormPrimaryProps<T = { [key: string]: any }>
+  extends EditFormBaseProps<T> {
+  fields: ReactElement[];
+  initialValues?: any;
+  children?: ReactNode;
 }
+
+export interface EditFormAlternativeProps<T = { [key: string]: any }>
+  extends EditFormBaseProps<T> {
+  fields?: ReactElement[];
+  initialValues: any;
+  children: ReactNode;
+}
+
+export interface EditFormBaseProps<T = { [key: string]: any }> {
+  onSubmit: OnSubmitType<T>;
+  validationSchema?: any;
+  validateOnChange?: boolean;
+}
+
+type OnSubmitType<T = { [key: string]: any }> = (
+  id: Identifier,
+  values: T,
+  formikHelpers: FormikHelpers<T>,
+  listHelpers: ListHelper
+) => void | Promise<any>;

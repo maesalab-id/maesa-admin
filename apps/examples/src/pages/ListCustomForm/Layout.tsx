@@ -12,7 +12,7 @@ import {
 } from '@maesa-admin/ui-mantine';
 import { Box, Card, Group } from '@mantine/core';
 import { useDataContext } from '../../api/useDataContext';
-import { ListCreate } from './ListCreate';
+import { ListCreate, ListCreateSchema } from './ListCreate';
 
 const TableWrapper = (props: any) => {
   return <Card mb="sm" px={0} {...props} />;
@@ -71,6 +71,7 @@ export const Layout = () => {
               password: '',
               description: '',
             }}
+            validationSchema={ListCreateSchema}
             onSubmit={async (values) => {
               console.log(values);
               await testCallback();
@@ -82,7 +83,7 @@ export const Layout = () => {
       )}
       queryFn={async ({ pagination }) => {
         const data = await getList('people', {
-          page: pagination?.skip,
+          page: pagination?.page,
         });
         return {
           limit: data.limit,

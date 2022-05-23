@@ -4,7 +4,8 @@ import { cloneElement, ReactElement, ReactNode, useMemo } from 'react';
 import _get from 'lodash/get';
 
 export const CreateForm = (props: CreateFormProps): JSX.Element => {
-  const { children, fields, onSubmit } = props;
+  const { children, validationSchema, validateOnChange, fields, onSubmit } =
+    props;
 
   const initialValues = useMemo(() => {
     if (props.initialValues) return props.initialValues;
@@ -16,7 +17,12 @@ export const CreateForm = (props: CreateFormProps): JSX.Element => {
   }, [props.initialValues, fields]);
 
   return (
-    <Formik onSubmit={onSubmit} initialValues={initialValues}>
+    <Formik
+      onSubmit={onSubmit}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      validateOnChange={validateOnChange}
+    >
       {({ values, errors, handleSubmit, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
           <Stack>
@@ -67,6 +73,8 @@ export interface CreateFormAlternativeProps<T = { [key: string]: any }>
 
 export interface CreateFormBaseProps<T = { [key: string]: any }> {
   onSubmit: OnSubmitType<T>;
+  validationSchema?: any;
+  validateOnChange?: boolean;
 }
 
 type OnSubmitType<T = { [key: string]: any }> = (

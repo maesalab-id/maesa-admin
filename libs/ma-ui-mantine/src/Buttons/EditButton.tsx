@@ -4,11 +4,23 @@ import { showNotification } from '@mantine/notifications';
 import { IconEdit, IconX } from '@tabler/icons';
 import { FormikHelpers } from 'formik';
 import { ReactElement, useState } from 'react';
-import { EditForm } from './EditForm';
+import {
+  EditForm,
+  EditFormAlternativeProps,
+  EditFormPrimaryProps,
+} from './EditForm';
 import { ListHelper } from './types';
 
 export const EditButton = (props: EditButtonProps): JSX.Element => {
-  const { drawer, fields, onSubmit } = props;
+  const {
+    children,
+    drawer,
+    fields,
+    onSubmit,
+    initialValues,
+    validateOnChange,
+    validationSchema,
+  } = props;
   const [isOpen, setOpen] = useState(false);
   const { refetch } = useListContext();
   return (
@@ -32,6 +44,9 @@ export const EditButton = (props: EditButtonProps): JSX.Element => {
       >
         {isOpen && (
           <EditForm
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            validateOnChange={validateOnChange}
             fields={fields}
             onSubmit={async (id, values, helpers) => {
               const { setSubmitting, setErrors } = helpers;
@@ -52,21 +67,35 @@ export const EditButton = (props: EditButtonProps): JSX.Element => {
               }
               setSubmitting(false);
             }}
-          />
+          >
+            {children}
+          </EditForm>
         )}
       </Drawer>
     </>
   );
 };
 
-export interface EditButtonProps<T = { [key: string]: any }> {
-  drawer?: DrawerProps;
-  fields: ReactElement[];
+export type EditButtonProps<T = { [key: string]: any }> =
+  | EditButtonPrimaryProps<T>
+  | EditButtonAlternativeProps<T>;
 
-  onSubmit: (
-    id: Identifier,
-    values: T,
-    formikHelpers: FormikHelpers<T>,
-    listHelper: ListHelper
-  ) => void | Promise<any>;
+export interface EditButtonPrimaryProps<T = { [key: string]: any }>
+  extends EditButtonBaseProps<T>,
+    Omit<EditFormPrimaryProps<T>, 'onSubmit'> {}
+
+export interface EditButtonAlternativeProps<T = { [key: string]: any }>
+  extends EditButtonBaseProps<T>,
+    Omit<EditFormAlternativeProps<T>, 'onSubmit'> {}
+
+export interface EditButtonBaseProps<T = { [key: string]: any }> {
+  drawer?: DrawerProps;
+  onSubmit: OnSubmitType<T>;
 }
+
+type OnSubmitType<T = { [key: string]: any }> = (
+  id: Identifier,
+  values: T,
+  formikHelpers: FormikHelpers<T>,
+  listHelper: ListHelper
+) => void | Promise<any>;

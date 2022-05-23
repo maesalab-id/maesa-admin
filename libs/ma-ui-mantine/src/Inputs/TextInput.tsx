@@ -11,7 +11,9 @@ import { IconBackspace, IconMinus } from '@tabler/icons';
 import { CommonInputProps } from '../Table/Filters/types';
 import { useField } from 'formik';
 
-interface TextInputProps extends DefaultProps<TextInputStylesNames>, CommonInputProps {
+interface TextInputProps
+  extends DefaultProps<TextInputStylesNames>,
+    CommonInputProps {
   minimal?: boolean;
   source?: string;
   isLoading?: boolean;
@@ -38,7 +40,7 @@ export const TextInput = (props: TextInputProps): JSX.Element => {
     ...rest
   } = props;
 
-  const [{ value }, meta, { setValue }] = useField({
+  const [{ value }, { error }, { setValue }] = useField({
     name: source,
   });
 
@@ -66,6 +68,7 @@ export const TextInput = (props: TextInputProps): JSX.Element => {
     <InputComponent
       label={!minimal && label}
       placeholder={placeholder}
+      error={error}
       onChange={(e) => {
         const value = e.target.value;
         setValue(value);

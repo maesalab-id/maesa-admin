@@ -12,7 +12,15 @@ import {
 import { ListHelper } from './types';
 
 export const CreateButton = (props: CreateButtonProps): JSX.Element => {
-  const { initialValues, children, drawer, fields, onSubmit } = props;
+  const {
+    validationSchema,
+    validateOnChange,
+    initialValues,
+    children,
+    drawer,
+    fields,
+    onSubmit,
+  } = props;
   const [isOpen, setOpen] = useState(false);
   const { refetch } = useListContext();
   return (
@@ -34,6 +42,8 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
         {isOpen && (
           <CreateForm
             initialValues={initialValues}
+            validationSchema={validationSchema}
+            validateOnChange={validateOnChange}
             fields={fields}
             onSubmit={async (values, helpers) => {
               if (!onSubmit) return;
