@@ -1,3 +1,3 @@
 export const Empty = () => {
-  return null;
+  return <h1>Welcome examples</h1>;
 };

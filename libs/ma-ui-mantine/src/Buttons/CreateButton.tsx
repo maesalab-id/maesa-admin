@@ -3,12 +3,16 @@ import { Button, Drawer, DrawerProps } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconPlus, IconX } from '@tabler/icons';
 import { FormikHelpers } from 'formik';
-import { ReactElement, useState } from 'react';
-import { CreateForm } from './CreateForm';
+import { useState } from 'react';
+import {
+  CreateForm,
+  CreateFormAlternativeProps,
+  CreateFormPrimaryProps,
+} from './CreateForm';
 import { ListHelper } from './types';
 
 export const CreateButton = (props: CreateButtonProps): JSX.Element => {
-  const { drawer, fields, onSubmit } = props;
+  const { initialValues, children, drawer, fields, onSubmit } = props;
   const [isOpen, setOpen] = useState(false);
   const { refetch } = useListContext();
   return (
@@ -29,8 +33,10 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
       >
         {isOpen && (
           <CreateForm
+            initialValues={initialValues}
             fields={fields}
             onSubmit={async (values, helpers) => {
+              if (!onSubmit) return;
               const { setSubmitting, setErrors } = helpers;
               try {
                 await onSubmit(values, helpers, { refetch });
@@ -49,19 +55,34 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
               }
               setSubmitting(false);
             }}
-          />
+          >
+            {children}
+          </CreateForm>
         )}
       </Drawer>
     </>
   );
 };
 
-export interface CreateButtonProps<T = { [key: string]: any }> {
+export type CreateButtonProps<T = { [key: string]: any }> =
+  | CreateButtonPrimaryProps<T>
+  | CreateButtonAlternativeProps<T>;
+
+export interface CreateButtonPrimaryProps<T = { [key: string]: any }>
+  extends CreateButtonBaseProps<T>,
+    Omit<CreateFormPrimaryProps<T>, 'onSubmit'> {}
+
+export interface CreateButtonAlternativeProps<T = { [key: string]: any }>
+  extends CreateButtonBaseProps<T>,
+    Omit<CreateFormAlternativeProps<T>, 'onSubmit'> {}
+
+export interface CreateButtonBaseProps<T = { [key: string]: any }> {
   drawer?: DrawerProps;
-  fields: ReactElement[];
-  onSubmit: (
-    values: T,
-    helpers: FormikHelpers<T>,
-    listHelper: ListHelper
-  ) => void | Promise<any>;
+  onSubmit: OnSubmitType<T>;
 }
+
+type OnSubmitType<T = { [key: string]: any }> = (
+  values: T,
+  helpers: FormikHelpers<T>,
+  listHelper: ListHelper
+) => void | Promise<any>;

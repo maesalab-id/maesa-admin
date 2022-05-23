@@ -78,7 +78,7 @@ export const FilterFormBase = (props: FilterFormBaseProps): JSX.Element => {
   }, [form.values, displayedFilters, filters]);
 
   return (
-    <Group>
+    <Group data-role="filter-form">
       {getShownFilters().map((el: ReactElement) => (
         <FilterFormInput
           key={el.props.source}

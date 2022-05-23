@@ -14,7 +14,7 @@ export const ListView = <RecordType extends MaRecord = any>(
     children,
     bulkActionButtons,
     component: Content = DefaultComponent,
-    pagination = <DefaultPagination />,
+    pagination = <DefaultPagination data-role="list-navigation" />,
     filters,
     actions: actionFn,
   } = props;

@@ -12,14 +12,7 @@ import {
 } from '@maesa-admin/ui-mantine';
 import { Box, Card, Group } from '@mantine/core';
 import { useDataContext } from '../../api/useDataContext';
-
-const createFields = [
-  <TextInput label="Name" source="name" />,
-  <TextInput label="Username" source="username" defaultValue="ilomon" />,
-  <TextInput label="Email" source="email" />,
-  <TextInput label="Password" source="password" type="password" />,
-  <TextareaInput label="Description" source="description" />,
-];
+import { ListCreate } from './ListCreate';
 
 const TableWrapper = (props: any) => {
   return <Card mb="sm" px={0} {...props} />;
@@ -44,7 +37,12 @@ export const Layout = () => {
         </>
       }
       filters={[
-        <TextInput label="Search" source="q" alwaysOn={true} data-filter-field="search" />,
+        <TextInput
+          label="Search"
+          source="q"
+          alwaysOn={true}
+          data-filter-field="search"
+        />,
         <SelectInput
           label="Role"
           source="role"
@@ -66,12 +64,20 @@ export const Layout = () => {
       actions={() => (
         <Group>
           <CreateButton
-            fields={createFields}
+            initialValues={{
+              name: "",
+              username: "",
+              email: "",
+              password: "",
+              description: "",
+            }}
             onSubmit={async (values) => {
               console.log(values);
               await testCallback();
             }}
-          />
+          >
+            <ListCreate />
+          </CreateButton>
         </Group>
       )}
       queryFn={({ pagination }) => {
@@ -91,7 +97,7 @@ export const Layout = () => {
         <TextField label={'Name'} source="name" />
         <TextField label={'Email'} source="email" />
         <Box sx={{ justifyContent: 'right', display: 'flex' }}>
-          <EditButton fields={createFields} onSubmit={testCallback} />
+          <EditButton fields={[]} onSubmit={testCallback} />
           <PreviewButton
             fields={[
               <TextField label="Id" source="id" />,

@@ -1,33 +1,36 @@
-import { Box, Button, Group, Notification } from '@mantine/core';
+import { Box, Button, Group, Notification, Stack } from '@mantine/core';
 import { Formik, FormikHelpers } from 'formik';
-import { cloneElement, ReactElement, useMemo } from 'react';
+import { cloneElement, ReactElement, ReactNode, useMemo } from 'react';
 import _get from 'lodash/get';
 
 export const CreateForm = (props: CreateFormProps): JSX.Element => {
-  const { fields, onSubmit } = props;
+  const { children, fields, onSubmit } = props;
+
   const initialValues = useMemo(() => {
-    const values = fields.reduce<{ [key: string]: any }>(
-      (currentValues, el) => {
-        currentValues[el.props.source] = el.props.defaultValue || undefined;
-        return currentValues;
-      },
-      {}
-    );
+    if (props.initialValues) return props.initialValues;
+    let values = fields?.reduce<{ [key: string]: any }>((currentValues, el) => {
+      currentValues[el.props.source] = el.props.defaultValue || undefined;
+      return currentValues;
+    }, {});
     return values;
-  }, [fields]);
+  }, [props.initialValues, fields]);
+
   return (
     <Formik onSubmit={onSubmit} initialValues={initialValues}>
       {({ values, errors, handleSubmit, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
-          {fields.map((el) => {
-            return cloneElement(el, {
-              key: el.props.source,
-              value: values[el.props.source],
-              mb: 'md',
-              ...el.props,
-            });
-          })}
-          <Group>
+          <Stack>
+            {children}
+            {!children &&
+              fields?.map((el) => {
+                return cloneElement(el, {
+                  key: el.props.source,
+                  value: values[el.props.source],
+                  ...el.props,
+                });
+              })}
+          </Stack>
+          <Group mt={'lg'}>
             <Box sx={{ flexGrow: 1 }} />
             <Button
               type="submit"
@@ -44,8 +47,29 @@ export const CreateForm = (props: CreateFormProps): JSX.Element => {
   );
 };
 
-export interface CreateFormProps<T = { [key: string]: any }> {
-  initialValues?: any;
+export type CreateFormProps<T = { [key: string]: any }> =
+  | CreateFormPrimaryProps<T>
+  | CreateFormAlternativeProps<T>;
+
+export interface CreateFormPrimaryProps<T = { [key: string]: any }>
+  extends CreateFormBaseProps<T> {
   fields: ReactElement[];
-  onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
+  initialValues?: any;
+  children?: ReactNode;
 }
+
+export interface CreateFormAlternativeProps<T = { [key: string]: any }>
+  extends CreateFormBaseProps<T> {
+  fields?: ReactElement[];
+  initialValues: any;
+  children: ReactNode;
+}
+
+export interface CreateFormBaseProps<T = { [key: string]: any }> {
+  onSubmit: OnSubmitType<T>;
+}
+
+type OnSubmitType<T = { [key: string]: any }> = (
+  values: T,
+  formikHelpers: FormikHelpers<T>
+) => void | Promise<any>;

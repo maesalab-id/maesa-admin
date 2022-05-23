@@ -1,6 +1,5 @@
 import { Pagination as MtPagination } from '@mantine/core';
 import { useListPaginationContext } from '@maesa-admin/core';
-import { FC } from 'react';
 
 export const Pagination = (props: PaginationProps): JSX.Element | null => {
   const {
@@ -8,6 +7,9 @@ export const Pagination = (props: PaginationProps): JSX.Element | null => {
     page,
     limit,
     setPage,
+    setLimit,
+    isLoading,
+    ...rest
   } = useListPaginationContext(props);
 
   const total = Math.abs(initialTotal / limit);
@@ -15,7 +17,7 @@ export const Pagination = (props: PaginationProps): JSX.Element | null => {
   if (total < limit) return null;
 
   return (
-    <div>
+    <div {...rest}>
       <MtPagination
         onChange={(page) => {
           setPage(page);
@@ -27,6 +29,6 @@ export const Pagination = (props: PaginationProps): JSX.Element | null => {
   );
 };
 
-export interface PaginationProps {
+export interface PaginationProps extends JSX.IntrinsicAttributes {
   onChange?: (arg: void) => void;
 }

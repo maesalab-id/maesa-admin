@@ -3,13 +3,15 @@ import {
   Loader,
   TextInput as MtTextInput,
   PasswordInput as MtPasswordInput,
+  DefaultProps,
+  TextInputStylesNames,
 } from '@mantine/core';
 import { HTMLInputTypeAttribute, InputHTMLAttributes, useMemo } from 'react';
 import { IconBackspace, IconMinus } from '@tabler/icons';
 import { CommonInputProps } from '../Table/Filters/types';
 import { useField } from 'formik';
 
-interface TextInputProps extends CommonInputProps {
+interface TextInputProps extends DefaultProps<TextInputStylesNames>, CommonInputProps {
   minimal?: boolean;
   source?: string;
   isLoading?: boolean;

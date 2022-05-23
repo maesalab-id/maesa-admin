@@ -1,10 +1,16 @@
-import { ActionIcon, Loader, Textarea } from '@mantine/core';
-import { HTMLInputTypeAttribute, InputHTMLAttributes, useMemo } from 'react';
-import { IconBackspace } from '@tabler/icons';
+import {
+  DefaultProps,
+  Loader,
+  Textarea,
+  TextInputStylesNames,
+} from '@mantine/core';
+import { useMemo } from 'react';
 import { CommonInputProps } from '../Table/Filters/types';
 import { useField } from 'formik';
 
-interface TextInputProps extends CommonInputProps {
+interface TextInputProps
+  extends DefaultProps<TextInputStylesNames>,
+    CommonInputProps {
   minimal?: boolean;
   source?: string;
   isLoading?: boolean;

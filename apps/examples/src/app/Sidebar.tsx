@@ -14,6 +14,10 @@ const links = [
     path: '/list',
   },
   {
+    label: 'List with Custom Form',
+    path: '/list-custom-form',
+  },
+  {
     label: 'Empty',
     path: '/',
   },
