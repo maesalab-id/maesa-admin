@@ -12,9 +12,9 @@ export const Pagination = (props: PaginationProps): JSX.Element | null => {
     ...rest
   } = useListPaginationContext(props);
 
-  const total = Math.abs(initialTotal / limit);
+  const total = Math.ceil(initialTotal / limit);
 
-  if (initialTotal < limit) return null;
+  if (total === 1 || initialTotal < limit) return null;
 
   return (
     <div {...rest}>

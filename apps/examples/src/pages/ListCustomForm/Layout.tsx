@@ -81,7 +81,6 @@ export const Layout = () => {
         </Group>
       )}
       queryFn={async ({ pagination }) => {
-        console.log(pagination);
         const data = await getList('people', {
           page: pagination?.skip,
         });
