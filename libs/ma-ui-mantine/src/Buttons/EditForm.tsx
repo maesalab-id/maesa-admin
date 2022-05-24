@@ -1,4 +1,4 @@
-import { Box, Button, Group } from '@mantine/core';
+import { Box, Button, Group, Stack } from '@mantine/core';
 import { Formik, FormikHelpers } from 'formik';
 import { cloneElement, ReactElement, ReactNode, useMemo } from 'react';
 import _get from 'lodash/get';
@@ -18,13 +18,15 @@ export const EditForm = (props: EditFormProps): JSX.Element => {
   const record = useRecordContext(props);
 
   const initialValues = useMemo(() => {
-    if (props.initialValues) return props.initialValues;
+    if (typeof props.initialValues !== 'undefined') return props.initialValues;
+    if (!fields) return record;
+
     let values = fields?.reduce<{ [key: string]: any }>((currentValues, el) => {
       currentValues[el.props.source] = el.props.defaultValue || undefined;
       return currentValues;
     }, {});
     return values;
-  }, [props.initialValues, fields]);
+  }, [props.initialValues, record, fields]);
 
   const listHelper: ListHelper = {
     refetch,
@@ -41,16 +43,18 @@ export const EditForm = (props: EditFormProps): JSX.Element => {
     >
       {({ values, errors, handleSubmit, resetForm, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
-          {children}
-          {fields?.map((el) => {
-            return cloneElement(el, {
-              key: el.props.source,
-              value: values[el.props.source],
-              mb: 'md',
-              ...el.props,
-            });
-          })}
-          <Group>
+          <Stack>
+            {children}
+            {fields?.map((el) => {
+              return cloneElement(el, {
+                key: el.props.source,
+                value: values[el.props.source],
+                mb: 'md',
+                ...el.props,
+              });
+            })}
+          </Stack>
+          <Group mt="lg">
             <Box sx={{ flexGrow: 1 }} />
             <Button
               type="reset"
@@ -91,7 +95,7 @@ export interface EditFormPrimaryProps<T = { [key: string]: any }>
 export interface EditFormAlternativeProps<T = { [key: string]: any }>
   extends EditFormBaseProps<T> {
   fields?: ReactElement[];
-  initialValues: any;
+  initialValues?: any;
   children: ReactNode;
 }
 

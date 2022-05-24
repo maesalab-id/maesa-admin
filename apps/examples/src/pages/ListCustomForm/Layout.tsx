@@ -13,6 +13,7 @@ import {
 import { Box, Card, Group } from '@mantine/core';
 import { useDataContext } from '../../api/useDataContext';
 import { ListCreate, ListCreateSchema } from './ListCreate';
+import { ListEdit, ListEditSchema } from './ListEdit';
 
 const TableWrapper = (props: any) => {
   return <Card mb="sm" px={0} {...props} />;
@@ -98,7 +99,14 @@ export const Layout = () => {
         <TextField label={'Name'} source="name" />
         <TextField label={'Email'} source="email" />
         <Box sx={{ justifyContent: 'right', display: 'flex' }}>
-          <EditButton fields={[]} onSubmit={testCallback} />
+          <EditButton
+            validationSchema={ListEditSchema}
+            onSubmit={async (id, values) => {
+              await testCallback();
+            }}
+          >
+            <ListEdit />
+          </EditButton>
           <PreviewButton
             fields={[
               <TextField label="Id" source="id" />,
