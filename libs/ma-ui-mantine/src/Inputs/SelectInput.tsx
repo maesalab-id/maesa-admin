@@ -9,8 +9,9 @@ import {
 import { Group, Loader, Select, SelectItem, Text } from '@mantine/core';
 import { SelectSharedProps } from '@mantine/core/lib/components/Select/Select';
 import { useField } from 'formik';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { CommonInputProps } from '../Table';
+import toString from 'lodash/toString';
 
 export const SelectInput = (props: SelectInputProps): JSX.Element => {
   const { queryFn, queryOptions, ...rest } = props;
@@ -43,9 +44,9 @@ const SelectInputBase = (props: SelectInputBaseProps): JSX.Element => {
   const { data, setFilters, displayedFilters, filterValues, isLoading } =
     useChoicesContext();
 
-  const [{ name, value }, meta, { setValue }] = useField({
+  const [{ name, value: rawValue }, meta, { setValue }] = useField({
     name: source,
-    value: filterValues.query,
+    // value: filterValues.query,
   });
 
   const placeholder = useMemo<string>((): string => {
@@ -68,9 +69,19 @@ const SelectInputBase = (props: SelectInputBaseProps): JSX.Element => {
     return result;
   }, [initialChoices, data]);
 
+  const value = useMemo(() => {
+    return toString(rawValue);
+  }, [rawValue]);
+
+  useEffect(() => {
+    setFilters({ selectedValue: value }, displayedFilters);
+  }, [value]);
+
   return (
     <Select
       {...rest}
+      name={name}
+      value={value}
       label={!minimal && label}
       placeholder={placeholder}
       searchable={true}
@@ -88,8 +99,6 @@ const SelectInputBase = (props: SelectInputBaseProps): JSX.Element => {
       onSearchChange={(query) => {
         setFilters({ query }, displayedFilters);
       }}
-      name={name}
-      value={value}
       onChange={(value) => {
         setValue(value);
       }}

@@ -1,3 +1,6 @@
+import omitBy from 'lodash/omitBy';
+import isNil from 'lodash/isNil';
+
 export const getList = async (
   resource: string,
   props?: GetListProps
@@ -5,11 +8,14 @@ export const getList = async (
   let limit = props?.limit || 10;
   let page = props?.page || 0;
   let filter = props?.filter;
+  let query = props?.query || {};
+  query = omitBy(query, isNil);
 
   const urlSearchParams = new URLSearchParams({
     ...filter,
     _limit: `${limit}`,
     _page: `${page}`,
+    ...query,
   });
 
   const url = new URL(
@@ -40,6 +46,7 @@ export interface GetListResult<T extends { [key: string]: any } = any> {
 export interface GetListProps {
   limit?: number;
   page?: number;
+  query?: object;
   filter?: {
     [key: string]: any;
   };

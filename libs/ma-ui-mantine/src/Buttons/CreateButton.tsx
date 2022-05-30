@@ -38,6 +38,12 @@ export const CreateButton = (props: CreateButtonProps): JSX.Element => {
         size="xl"
         opened={isOpen}
         onClose={() => setOpen(false)}
+        styles={{
+          drawer: {
+            height: '100%',
+            overflowY: 'auto',
+          },
+        }}
       >
         {isOpen && (
           <CreateForm

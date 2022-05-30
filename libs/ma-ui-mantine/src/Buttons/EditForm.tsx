@@ -22,7 +22,8 @@ export const EditForm = (props: EditFormProps): JSX.Element => {
     if (!fields) return record;
 
     let values = fields?.reduce<{ [key: string]: any }>((currentValues, el) => {
-      currentValues[el.props.source] = el.props.defaultValue || undefined;
+      const s = el.props.source;
+      currentValues[s] = el.props.defaultValue || record?.[s] || undefined;
       return currentValues;
     }, {});
     return values;

@@ -1,9 +1,14 @@
 import { Identifier, useListContext } from '@maesa-admin/core';
-import { ActionIcon, Drawer, DrawerProps, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Drawer,
+  DrawerProps,
+  Tooltip,
+} from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconEdit, IconX } from '@tabler/icons';
 import { FormikHelpers } from 'formik';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import {
   EditForm,
   EditFormAlternativeProps,
@@ -41,6 +46,12 @@ export const EditButton = (props: EditButtonProps): JSX.Element => {
         size="xl"
         opened={isOpen}
         onClose={() => setOpen(false)}
+        styles={{
+          drawer: {
+            height: '100%',
+            overflowY: 'auto',
+          },
+        }}
       >
         {isOpen && (
           <EditForm
