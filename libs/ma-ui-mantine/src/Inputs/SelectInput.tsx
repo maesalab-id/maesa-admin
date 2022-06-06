@@ -73,10 +73,6 @@ const SelectInputBase = (props: SelectInputBaseProps): JSX.Element => {
     return toString(rawValue);
   }, [rawValue]);
 
-  useEffect(() => {
-    setFilters({ selectedValue: value }, displayedFilters);
-  }, [value]);
-
   return (
     <Select
       {...rest}

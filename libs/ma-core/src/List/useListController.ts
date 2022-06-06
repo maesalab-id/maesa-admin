@@ -165,13 +165,13 @@ interface GetListResult<RecordType> {
 }
 
 export type QueryFunctionArgs = {
-  filter?: FilterPayload;
-  pagination?: {
+  filter: FilterPayload;
+  pagination: {
     limit: number;
     skip: number;
     page: number;
   };
-  sort?: SortPayload;
+  sort: SortPayload;
 };
 
 export interface ListControllerProps<RecordType extends MaRecord = any> {

@@ -8,12 +8,13 @@ import {
   PreviewButton,
   BulkDeleteButton,
   SelectInput,
-  TextareaInput,
+  AvatarFields,
 } from '@maesa-admin/ui-mantine';
 import { Box, Card, Group } from '@mantine/core';
 import { useDataContext } from '../../api/useDataContext';
 import { ListCreate, ListCreateSchema } from './ListCreate';
 import { ListEdit, ListEditSchema } from './ListEdit';
+import { omitBy, isNil } from 'lodash';
 
 const TableWrapper = (props: any) => {
   return <Card mb="sm" px={0} {...props} />;
@@ -47,8 +48,8 @@ export const Layout = () => {
         <SelectInput
           label="Role"
           source="role"
-          queryFn={async ({ pagination }) => {
-            const data = await getList('people', {
+          queryFn={async ({ filter, pagination }) => {
+            const data = await getList('roles', {
               page: pagination?.page,
             });
             return data;
@@ -82,8 +83,13 @@ export const Layout = () => {
           </CreateButton>
         </Group>
       )}
-      queryFn={async ({ pagination }) => {
+      queryFn={async ({ filter, pagination }) => {
+        let query: any = {
+          role_id: filter['role'],
+        };
+        query = omitBy(query, isNil);
         const data = await getList('people', {
+          filter: query,
           page: pagination?.page,
         });
         return {
@@ -96,8 +102,10 @@ export const Layout = () => {
     >
       <Table>
         <TextField label="Id" source="id" />
+        <AvatarFields label={'Avatar'} source="avatar" />
         <TextField label={'Name'} source="name" />
         <TextField label={'Email'} source="email" />
+        <TextField label={'Role'} source="role.name" />
         <Box sx={{ justifyContent: 'right', display: 'flex' }}>
           <EditButton
             validationSchema={ListEditSchema}

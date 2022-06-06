@@ -22,7 +22,7 @@ export default function () {
   return {
     companies,
     roles,
-    people: times(10, function (n) {
+    people: times(100, function (n) {
       const g = faker.name.gender();
       const company = companies[Math.floor(Math.random() * companies.length)];
       const role = roles[Math.floor(Math.random() * roles.length)];

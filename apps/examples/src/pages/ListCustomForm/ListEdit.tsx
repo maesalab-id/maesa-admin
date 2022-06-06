@@ -1,6 +1,8 @@
-import { TextareaInput, TextInput } from '@maesa-admin/ui-mantine';
+import { SelectInput, TextareaInput, TextInput } from '@maesa-admin/ui-mantine';
 import { Group, Stack } from '@mantine/core';
 import * as Yup from 'yup';
+import { getList } from '../../api/getList';
+import { isNil, omit, omitBy, toString } from 'lodash';
 
 export const ListEditSchema = Yup.object().shape({
   name: Yup.string().required(),
@@ -30,6 +32,27 @@ export const ListEdit = () => {
         />
       </Group>
       <TextareaInput label="Description" source="description" />
+      <SelectInput
+        label="Role"
+        source="role_id"
+        queryFn={async ({ filter, pagination }) => {
+          let query: any = {
+            name: filter['query'],
+          };
+          query = omitBy(query, isNil);
+          const data = await getList('roles', {
+            filter: query,
+            page: pagination?.page,
+          });
+          return data;
+        }}
+        choices={(data) => {
+          return data.map(({ id, name }) => ({
+            value: toString(id),
+            label: name,
+          }));
+        }}
+      />
     </Stack>
   );
 };
