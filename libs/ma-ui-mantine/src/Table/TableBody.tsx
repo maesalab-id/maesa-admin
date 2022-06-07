@@ -1,5 +1,5 @@
 import { Identifier } from '@maesa-admin/core';
-import { ChangeEvent, FC, ReactElement } from 'react';
+import { ChangeEvent, FC, ReactElement, ReactNode } from 'react';
 import { TableBodyRow } from './TableBodyRow';
 import { TableBodyRowSkeleton } from './TableBodyRowSkeleton';
 
@@ -12,6 +12,8 @@ export const TableBody: FC<TableBodyProps> = (props): ReactElement => {
     children,
     selectedIds,
     onToggleItem,
+
+    expand,
   } = props;
   return (
     <tbody>
@@ -27,6 +29,7 @@ export const TableBody: FC<TableBodyProps> = (props): ReactElement => {
             <TableBodyRow
               id={record.id}
               key={record.id ?? `row${rowIndex}`}
+              expand={expand}
               record={record}
               selected={selectedIds?.includes(record.id)}
               onToggleItem={onToggleItem}
@@ -48,4 +51,6 @@ export interface TableBodyProps {
   selectedIds?: Identifier[];
   hasBulkActions?: boolean;
   onToggleItem?: (id: Identifier, event: ChangeEvent<HTMLInputElement>) => void;
+
+  expand?: ReactNode;
 }

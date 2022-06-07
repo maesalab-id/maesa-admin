@@ -9,12 +9,15 @@ import {
   ChangeEvent,
   cloneElement,
   ComponentType,
+  createElement,
   isValidElement,
   ReactElement,
+  ReactNode,
   useCallback,
 } from 'react';
 import { TableBody } from './TableBody';
 import { TableHeader } from './TableHeader';
+import { isNil } from 'lodash';
 
 export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
   const { data, limit, isLoading, isFetching, selectedIds, toggleSelection } =
@@ -23,7 +26,8 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
   const {
     children,
     hasBulkActions = true,
-    header: Header = <TableHeader data={data} />,
+    expand,
+    header: Header = TableHeader,
   } = props;
 
   const handleToggleItem = useCallback(
@@ -45,15 +49,25 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
     return null;
   }
 
+  console.log(Header);
+
   return (
     <div>
       <LoadingOverlay visible={isFetching} />
       <MtTable highlightOnHover={true}>
-        {isValidElement(Header) ? cloneElement(Header, {}, children) : null}
+        {createOrCloneElement(
+          Header,
+          {
+            hasExpand: !isNil(expand),
+            data: data,
+          },
+          children
+        )}
         <TableBody
           limit={limit}
           skeleton={isLoading}
           data={data}
+          expand={expand}
           selectedIds={selectedIds}
           onToggleItem={handleToggleItem}
           hasBulkActions={hasBulkActions}
@@ -65,9 +79,20 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
   );
 };
 
+const createOrCloneElement = (
+  element: ReactElement | any,
+  props: any,
+  children: any
+) =>
+  isValidElement(element)
+    ? cloneElement(element, props, children)
+    : createElement(element, props, children);
+
 export interface TableProps {
   actions?: ReactElement | false;
   children: ReactElement | ReactElement[];
   header?: ReactElement | ComponentType | null;
   hasBulkActions?: boolean;
+
+  expand?: ReactNode;
 }

@@ -4,7 +4,9 @@ import {
   Identifier,
   MaRecord,
 } from '@maesa-admin/core';
-import { Checkbox } from '@mantine/core';
+import { ActionIcon, Checkbox } from '@mantine/core';
+import { IconChevronDown, IconChevronRight } from '@tabler/icons';
+import { isNil } from 'lodash';
 import {
   ChangeEvent,
   ChangeEventHandler,
@@ -12,14 +14,28 @@ import {
   FC,
   isValidElement,
   ReactElement,
+  ReactNode,
   useCallback,
+  useMemo,
+  useState,
 } from 'react';
 import { TableBodyCell } from './TableBodyCell';
 
 export const TableBodyRow: FC<TableBodyRowProps> = (props): ReactElement => {
-  const { id, children, selected, hasBulkActions = true, onToggleItem } = props;
+  const {
+    id,
+    children,
+    selected,
+    hasBulkActions = true,
+    onToggleItem,
+    expand,
+  } = props;
 
   const record = useRecordContext(props);
+
+  const expandable = useMemo(() => {
+    return !!expand;
+  }, [expand]);
 
   const handleToggleSelection = useCallback<
     ChangeEventHandler<HTMLInputElement>
@@ -27,9 +43,26 @@ export const TableBodyRow: FC<TableBodyRowProps> = (props): ReactElement => {
     onToggleItem?.(id as Identifier, event);
   }, []);
 
+  const colCount = useMemo(() => {
+    let count = 0;
+    count += Children.toArray(children).filter((child) => !!child).length;
+    if (expand) count += 1;
+    if (hasBulkActions) count += 1;
+    return count;
+  }, [children, expandable, hasBulkActions]);
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <RecordContextProvider value={record}>
       <tr>
+        {expandable && (
+          <td>
+            <ActionIcon onClick={() => setIsExpanded((s) => !s)}>
+              {isExpanded ? <IconChevronDown /> : <IconChevronRight />}
+            </ActionIcon>
+          </td>
+        )}
         {hasBulkActions && (
           <td>
             <Checkbox
@@ -47,6 +80,11 @@ export const TableBodyRow: FC<TableBodyRowProps> = (props): ReactElement => {
           ) : null
         )}
       </tr>
+      {isExpanded && expandable && (
+        <tr>
+          <td colSpan={colCount}>{expand}</td>
+        </tr>
+      )}
     </RecordContextProvider>
   );
 };
@@ -58,4 +96,6 @@ interface TableBodyRowProps {
   selected?: boolean;
   hasBulkActions?: boolean;
   onToggleItem?: (id: Identifier, event: ChangeEvent<HTMLInputElement>) => void;
+
+  expand?: ReactNode;
 }

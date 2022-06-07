@@ -11,7 +11,7 @@ import { TableHeaderCell } from './TableHeaderCell';
 import { Checkbox } from '@mantine/core';
 
 export const TableHeader: FC<TableHeaderProps> = (props): ReactElement => {
-  const { children, hasBulkActions = true } = props;
+  const { children, hasBulkActions = true, hasExpand } = props;
   const { data, selectedIds, selecting } = useListContext(props);
 
   const handleSelectAll = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -36,6 +36,7 @@ export const TableHeader: FC<TableHeaderProps> = (props): ReactElement => {
   return (
     <thead>
       <tr>
+        {hasExpand && <th />}
         {hasBulkActions && (
           <th style={{ width: 1 }}>
             <Checkbox
@@ -66,4 +67,6 @@ export interface TableHeaderProps<RecordType extends MaRecord = any> {
   data?: RecordType[];
   children?: ReactElement | ReactElement[];
   hasBulkActions?: boolean;
+
+  hasExpand?: boolean;
 }

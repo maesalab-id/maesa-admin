@@ -18,6 +18,10 @@ const links = [
     path: '/list-custom-form',
   },
   {
+    label: 'List with Expandable',
+    path: '/list-with-expandable',
+  },
+  {
     label: 'Empty',
     path: '/',
   },
@@ -64,7 +68,7 @@ const useStyles = createStyles((theme) => ({
     marginBottom: theme.spacing.lg,
     color: theme.colorScheme === 'dark' ? theme.white : theme.black,
     borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === 'dark' ? theme.colors['dark'][4] : theme.colors['gray'][3]
     }`,
   },
 
@@ -81,8 +85,8 @@ const useStyles = createStyles((theme) => ({
     borderBottomRightRadius: theme.radius.md,
     color:
       theme.colorScheme === 'dark'
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
+        ? theme.colors['dark'][0]
+        : theme.colors['gray'][7],
     padding: `0 ${theme.spacing.md}px`,
     fontSize: theme.fontSizes.sm,
     marginRight: theme.spacing.md,
@@ -93,8 +97,8 @@ const useStyles = createStyles((theme) => ({
     '&:hover': {
       backgroundColor:
         theme.colorScheme === 'dark'
-          ? theme.colors.dark[5]
-          : theme.colors.gray[1],
+          ? theme.colors['dark'][5]
+          : theme.colors['gray'][1],
       color: theme.colorScheme === 'dark' ? theme.white : theme.black,
     },
 
