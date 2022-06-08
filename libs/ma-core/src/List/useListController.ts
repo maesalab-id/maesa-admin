@@ -184,8 +184,8 @@ export interface ListControllerProps<RecordType extends MaRecord = any> {
   queryFn?: (
     args: QueryFunctionArgs
   ) =>
-    | (GetListResult<RecordType[]> | null)
-    | Promise<GetListResult<RecordType[]> | null>;
+    | (GetListResult<RecordType> | null)
+    | Promise<GetListResult<RecordType> | null>;
 
   sort?: SortPayload;
 
