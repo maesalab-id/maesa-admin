@@ -36,7 +36,7 @@ export const TableHeader: FC<TableHeaderProps> = (props): ReactElement => {
   return (
     <thead>
       <tr>
-        {hasExpand && <th />}
+        {hasExpand && <th style={{ width: 1 }} />}
         {hasBulkActions && (
           <th style={{ width: 1 }}>
             <Checkbox
