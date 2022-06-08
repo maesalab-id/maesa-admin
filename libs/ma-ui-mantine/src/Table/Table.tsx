@@ -30,8 +30,6 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
     header: Header = TableHeader,
   } = props;
 
-  console.log(props);
-
   const handleToggleItem = useCallback(
     (id: Identifier, event: ChangeEvent<HTMLInputElement>) => {
       toggleSelection(id);
