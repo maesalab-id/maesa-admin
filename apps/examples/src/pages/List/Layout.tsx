@@ -72,16 +72,6 @@ export const Layout = () => {
   return (
     <ListBase
       component={TableWrapper}
-      bulkActionButtons={
-        <>
-          <BulkDeleteButton
-            onSubmit={(ids, { refetch }) => {
-              console.log(ids);
-              refetch();
-            }}
-          />
-        </>
-      }
       filters={[
         <TextInput
           label="Search"

@@ -1,5 +1,12 @@
 import { Card } from '@mantine/core';
-import { ElementType, isValidElement, ReactElement, useMemo } from 'react';
+import {
+  Children,
+  cloneElement,
+  ElementType,
+  isValidElement,
+  ReactElement,
+  useMemo,
+} from 'react';
 import { MaRecord, useListContext } from '@maesa-admin/core';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from '../Pagination';
@@ -44,7 +51,12 @@ export const ListView = <RecordType extends MaRecord = any>(
             {isValidElement(bulkActionButtons) && bulkActionButtons}
           </BulkActionsToolbar>
         )}
-        {children}
+        {Children.map(children, (child) => {
+          if (isValidElement(child)) {
+            return cloneElement(child, { hasBulkActions: !!bulkActionButtons } as any);
+          }
+          return child;
+        })}
       </Content>
       {pagination}
     </div>

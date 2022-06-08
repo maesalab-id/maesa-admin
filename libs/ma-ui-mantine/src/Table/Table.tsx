@@ -30,6 +30,8 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
     header: Header = TableHeader,
   } = props;
 
+  console.log(props);
+
   const handleToggleItem = useCallback(
     (id: Identifier, event: ChangeEvent<HTMLInputElement>) => {
       toggleSelection(id);
@@ -56,6 +58,7 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
         {createOrCloneElement(
           Header,
           {
+            hasBulkActions: hasBulkActions,
             hasExpand: !isNil(expand),
             data: data,
           },
