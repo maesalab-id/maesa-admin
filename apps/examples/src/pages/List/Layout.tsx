@@ -139,7 +139,7 @@ export const Layout = () => {
         };
       }}
     >
-      <Table>
+      <Table expand={<div>COBA</div>}>
         <TextField label="Id" source="id" />
         <TextField label={'Name'} source="name" />
         <TextField label={'Email'} source="email" />

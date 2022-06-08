@@ -25,7 +25,7 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
 
   const {
     children,
-    hasBulkActions = true,
+    hasBulkActions = false,
     expand,
     header: Header = TableHeader,
   } = props;
