@@ -49,8 +49,6 @@ export const Table = <RecordType extends MaRecord = any>(props: TableProps) => {
     return null;
   }
 
-  console.log(Header);
-
   return (
     <div>
       <LoadingOverlay visible={isFetching} />

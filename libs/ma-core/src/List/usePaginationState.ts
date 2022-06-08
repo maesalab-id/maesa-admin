@@ -48,7 +48,6 @@ export const usePaginationState = (
   const setLimit = useCallback((limit: number | undefined) => setPagination({ limit, page: 1 }), [])
 
   const setPage = useCallback((page: number) => {
-    console.log("set page", page);
     setPagination({ page })
   }, []);
 
